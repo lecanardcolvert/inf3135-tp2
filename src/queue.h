@@ -71,6 +71,30 @@ void queue_push(queue *q, const void *value);
 const void *queue_pop(queue *q);
 
 /**
+ * Return the first value in a queue
+ *
+ * @param q  The queue
+ * @return   The first value in the queue
+ */
+const void *queue_first(const queue *q);
+
+/**
+ * Return the last value in a queue
+ *
+ * @param q  The queue
+ * @return   The last value in the queue
+ */
+const void *queue_last(const queue *q);
+
+/**
+ * Return the number of elements in the queue
+ *
+ * @param q  The queue
+ * @return   The lenth of the queue
+ */
+unsigned int queue_length(const queue *q);
+
+/**
  * Prints the given queue
  *
  * @param q  The queue

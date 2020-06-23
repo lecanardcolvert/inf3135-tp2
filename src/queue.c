@@ -15,10 +15,12 @@ void queue_delete(queue *q) {
 }
 
 bool queue_is_empty(const queue *q) {
+    assert(q != NULL);
     return q->first == NULL;
 }
 
 void queue_push(queue *q, const void *value) {
+    assert(q != NULL);
     struct queue_node *node = malloc(sizeof(struct queue_node));
     node->value = value;
     node->next = NULL;
@@ -41,7 +43,28 @@ const void *queue_pop(queue *q) {
     return value;
 }
 
+const void *queue_first(const queue *q) {
+    assert(!queue_is_empty(q));
+    return q->first->value;
+}
+
+const void *queue_last(const queue *q) {
+    assert(!queue_is_empty(q));
+    return q->last->value;
+}
+
+unsigned int queue_length(const queue *q) {
+    assert(q != NULL);
+    unsigned int n = 0;
+    for (struct queue_node *node = q->first;
+         node != NULL;
+         node = node->next)
+        ++n;
+    return n;
+}
+
 void queue_print(const queue *q) {
+    assert(q != NULL);
     printf("[ ");
     for (struct queue_node *node = q->first;
          node != NULL;
