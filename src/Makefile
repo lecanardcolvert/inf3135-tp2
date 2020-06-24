@@ -1,3 +1,11 @@
+all: map.o map_graph.o
+
+map.o: map.h map.c
+	gcc $(shell pkg-config --cflags cairo) -c map.c
+
+map_graph.o: map_graph.h map_graph.c
+	gcc $(shell pkg-config --cflags cairo) -c map_graph.c
+
 test_queue: test_queue.o queue.o
 	gcc test_queue.o queue.o $(shell pkg-config --libs tap) -o test_queue
 
