@@ -54,7 +54,7 @@
  * - `struct direction`: describe a move from one cell to another
  * - `struct tile`: a tile, whose image can be used as many times as needed
  * - `struct layer`: a layer in the map
- * - `struct Map`: the map itself
+ * - `struct map`: the map itself
  *
  * @author   Alexandre Blondin Massé
  */
@@ -64,11 +64,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <cairo.h>
-#include "map_graph.h"
 
-// --------------- //
-// Data structures //
-// --------------- //
+// Types //
+// ----- //
 
 struct direction {    // A direction
     int delta_row;    // The displacement row-wise
@@ -87,7 +85,7 @@ struct tile {                        // A tile
 struct layer {                // A layer
     struct map *map;          // The map in which the layer is
     unsigned int **tiles;     // A matrix of the tiles in the layer
-    bool **highlight;         // If true, hilight the tile
+    bool **highlight;         // If true, highlight the tile
     unsigned int num_rows;    // The number of rows
     unsigned int num_columns; // The number of columns
     double offsetx;           // The x-offset

@@ -1,4 +1,5 @@
 #include "map.h"
+#include "map_graph.h"
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
@@ -108,8 +109,8 @@ void map_delete_map(struct map *map) {
     }
 }
 
-void map_addDirection(struct tile *tile,
-                      const struct direction *direction) {
+void map_add_direction(struct tile *tile,
+                       const struct direction *direction) {
     tile->directions[tile->num_directions] = *direction;
     ++tile->num_directions;
 }
@@ -174,10 +175,10 @@ void map_add_solution(struct map *map, struct map_path *path) {
     }
 }
 
-bool map_hasTileAbove(const struct map *map,
-                      unsigned int row,
-                      unsigned int column,
-                      unsigned int layer) {
+bool map_has_tile_above(const struct map *map,
+                        unsigned int row,
+                        unsigned int column,
+                        unsigned int layer) {
     assert(layer  < map->num_layers);
     assert(row    < map->num_rows);
     assert(column < map->num_columns);
@@ -186,7 +187,7 @@ bool map_hasTileAbove(const struct map *map,
         map->layers[layer + 1].tiles[row][column] != 0;
 }
 
-void map_printMap(const struct map *map, bool withSolution) {
+void map_print_map(const struct map *map, bool withSolution) {
     printf("A map of %d layers of %d rows and %d columns using %d tiles\n",
            map->num_layers, map->num_rows, map->num_columns, map->num_tiles);
     for (unsigned int i = 0; i < map->num_tiles; ++i) {
