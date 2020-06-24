@@ -14,7 +14,7 @@
 // ----- //
 
 struct queue_node {          // A node in the queue
-    const void *value;       // The value stored in the node
+    void *value;             // The value stored in the node
     struct queue_node *prev; // The previous node in the queue
     struct queue_node *next; // The next node in the queue
 };
@@ -58,7 +58,7 @@ bool queue_is_empty(const queue *q);
  * @param q      The queue
  * @param value  The value to push
  */
-void queue_push(queue *q, const void *value);
+void queue_push(queue *q, void *value);
 
 /**
  * Pop the first value of a queue
@@ -68,7 +68,7 @@ void queue_push(queue *q, const void *value);
  * @param q  The queue
  * @return   The first value in the queue
  */
-const void *queue_pop(queue *q);
+void *queue_pop(queue *q);
 
 /**
  * Return the first value in a queue
@@ -76,7 +76,7 @@ const void *queue_pop(queue *q);
  * @param q  The queue
  * @return   The first value in the queue
  */
-const void *queue_first(const queue *q);
+void *queue_first(const queue *q);
 
 /**
  * Return the last value in a queue
@@ -84,7 +84,7 @@ const void *queue_first(const queue *q);
  * @param q  The queue
  * @return   The last value in the queue
  */
-const void *queue_last(const queue *q);
+void *queue_last(const queue *q);
 
 /**
  * Return the number of elements in the queue

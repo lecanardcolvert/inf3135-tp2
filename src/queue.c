@@ -19,7 +19,7 @@ bool queue_is_empty(const queue *q) {
     return q->first == NULL;
 }
 
-void queue_push(queue *q, const void *value) {
+void queue_push(queue *q, void *value) {
     assert(q != NULL);
     struct queue_node *node = malloc(sizeof(struct queue_node));
     node->value = value;
@@ -33,22 +33,22 @@ void queue_push(queue *q, const void *value) {
     q->last = node;
 }
 
-const void *queue_pop(queue *q) {
+void *queue_pop(queue *q) {
     assert(!queue_is_empty(q));
     if (q->first == q->last) q->last = NULL;
-    const void *value = q->first->value;
+    void *value = q->first->value;
     struct queue_node *node = q->first;
     q->first = node->next;
     free(node);
     return value;
 }
 
-const void *queue_first(const queue *q) {
+void *queue_first(const queue *q) {
     assert(!queue_is_empty(q));
     return q->first->value;
 }
 
-const void *queue_last(const queue *q) {
+void *queue_last(const queue *q) {
     assert(!queue_is_empty(q));
     return q->last->value;
 }
