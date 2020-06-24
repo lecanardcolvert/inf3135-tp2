@@ -6,3 +6,12 @@ test_queue.o: test_queue.c
 
 queue.o: queue.h queue.c
 	gcc -c queue.c
+
+.PHONY: clean test
+
+clean:
+	rm -f *.o
+	rm -f test_queue
+
+test: test_queue
+	./test_queue
