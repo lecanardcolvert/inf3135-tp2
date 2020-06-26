@@ -3,7 +3,7 @@ tests_c_files = $(wildcard *.c)
 tests_obj_files = $(patsubst %.c,%.o,$(tests_c_files))
 tests_exec_files = $(patsubst %.c,%,$(tests_c_files))
 src_obj_files = $(wildcard ../$(src_dir)/*.o)
-CFLAGS = -Wall -Wextra $(shell pkg-config --cflags tap cairo)
+CFLAGS = -std=c11 -Wall -Wextra $(shell pkg-config --cflags tap cairo)
 LFLAGS = $(shell pkg-config --libs tap cairo)
 
 .PHONY: all clean source test
