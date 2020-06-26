@@ -1,0 +1,20 @@
+stages:
+    - build_stage
+    - test_stage
+
+build:
+    stage: build_stage
+    script:
+        - apt-get update -qq
+        - apt-get -y install libcairo2-dev
+        - make
+
+test:
+    stage: test_stage
+    script:
+        - build_root=$PWD
+        - apt-get update -qq
+        - cd /tmp && git clone https://github.com/zorgnax/libtap.git && cd libtap && make && make install
+        - ldconfig
+        - cd $build_root
+        - make test
