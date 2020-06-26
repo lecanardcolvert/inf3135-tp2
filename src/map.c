@@ -77,16 +77,14 @@ struct layer *map_add_layer(struct map *map,
     }
     for (layer = map->layers + map->num_layers;
          layer > map->layers && (layer - 1)->offset.dh > dh;
-         layer--)
+         --layer)
         *layer = *(layer - 1);
-    if (layer == map->layers) ++layer;
     layer->num_rows = num_rows;
     layer->num_columns = num_columns;
     layer->offset = (struct direction){dh, dr, dc};
     layer->tiles = malloc(num_rows * sizeof(tile_id*));
-    for (unsigned int i = 0; i < num_rows; ++i) {
+    for (unsigned int i = 0; i < num_rows; ++i)
         layer->tiles[i] = calloc(num_columns, sizeof(tile_id));
-    }
     ++map->num_layers;
     return layer;
 }
