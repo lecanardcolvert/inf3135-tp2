@@ -63,51 +63,53 @@ void map_delete(struct map *map) {
 struct layer *map_add_layer(struct map *map,
                             unsigned int num_rows,
                             unsigned int num_columns,
-                            int layer,
-                            int row,
-                            int column) {
-void *bsearch(const void *key, const void *base,
-                     size_t nmemb, size_t size,
-                     int (*compar)(const void *, const void *));
-
+                            int dh,
+                            int dr,
+                            int dc) {
+    struct layer *layer =
+        bsearch(&dh, map->layers, map->num_layers,
+                sizeof(struct layer), map_compare_layers);
+    if (layer != NULL) return NULL;
     if (map->num_layers == map->capacity) {
         map->capacity *= 2;
         map->layers = realloc(map->layers,
                               map->capacity * sizeof(struct layer));
     }
-    struct layer *lay = map->layers + map->num_layers;
-    lay->num_rows = num_rows;
-    lay->num_columns = num_columns;
-    lay->offset = (struct direction){layer, row, column};
-    lay->tiles = malloc(num_rows * sizeof(tile_id*));
+    for (layer = map->layers + map->num_layers;
+         layer > map->layers && (layer - 1)->offset.dh > dh;
+         layer--)
+        *layer = *(layer - 1);
+    if (layer == map->layers) ++layer;
+    layer->num_rows = num_rows;
+    layer->num_columns = num_columns;
+    layer->offset = (struct direction){dh, dr, dc};
+    layer->tiles = malloc(num_rows * sizeof(tile_id*));
     for (unsigned int i = 0; i < num_rows; ++i) {
-        lay->tiles[i] = calloc(num_columns, sizeof(tile_id));
+        layer->tiles[i] = calloc(num_columns, sizeof(tile_id));
     }
     ++map->num_layers;
-    return lay;
+    return layer;
 }
 
 tile_id map_tile_by_indices(const struct map *map,
                             unsigned int l,
                             unsigned int r,
                             unsigned int c) {
+    // TODO: not implemented
 }
 
 tile_id map_tile_by_location(const struct map *map,
                              unsigned int h,
                              unsigned int r,
                              unsigned int c) {
+    // TODO: not implemented
 }
 
 bool map_has_empty_tile_above(const struct map *map,
                               unsigned int row,
                               unsigned int column,
                               unsigned int layer) {
-    assert(layer  < map->num_layers);
-    assert(row    < map->layers[layer].num_rows);
-    assert(column < map->layers[layer].num_columns);
-    return layer > map->num_layers ||
-        map->layers[layer + 1].tiles[row][column] == 0;
+    // TODO: not implemented
 }
 
 void map_print_layer(const struct layer *layer,

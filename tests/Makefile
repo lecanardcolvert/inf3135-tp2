@@ -25,3 +25,4 @@ clean:
 
 test: all
 	./test_queue
+	./test_map
