@@ -1,4 +1,4 @@
-#include "queue.h"
+#include "../src/queue.h"
 #include <stdio.h>
 #include <tap.h>
 
