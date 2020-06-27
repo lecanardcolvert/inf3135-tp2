@@ -30,7 +30,7 @@ int map_compare_layers(const void *layer1, const void *layer2) {
  */
 int map_layer_by_height(const struct map *map,
                         int h) {
-    for (int l = 0; l < map->num_layers; ++l) {
+    for (int l = 0; l < (int)map->num_layers; ++l) {
         int dh = map->layers[l].offset.dh;
         if (dh == h)
             return l;
@@ -143,8 +143,8 @@ tile_id map_get_tile_by_location(const struct map *map,
     if (l != -1) {
         int r2 = r - map->layers[l].offset.dr;
         int c2 = c - map->layers[l].offset.dc;
-        if (r2 >= 0 && r2 < map->layers[l].num_rows &&
-            c2 >= 0 && c2 < map->layers[l].num_columns) {
+        if (r2 >= 0 && r2 < (int)map->layers[l].num_rows &&
+            c2 >= 0 && c2 < (int)map->layers[l].num_columns) {
             return map->layers[l].tiles[r2][c2];
         }
     }
