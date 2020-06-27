@@ -91,11 +91,27 @@ struct layer *map_add_layer(struct map *map,
     return layer;
 }
 
-tile_id map_tile_by_indices(const struct map *map,
-                            unsigned int l,
-                            unsigned int r,
-                            unsigned int c) {
-    // TODO: not implemented
+void map_set_tile_by_indices(struct map *map,
+                             unsigned int l,
+                             unsigned int r,
+                             unsigned int c,
+                             tile_id tile) {
+    assert(l < map->num_layers);
+    assert(r < map->layers[l].num_rows);
+    assert(c < map->layers[l].num_columns);
+    map->layers[l].tiles[r][c] = tile;
+}
+
+tile_id map_get_tile_by_indices(const struct map *map,
+                                unsigned int l,
+                                unsigned int r,
+                                unsigned int c) {
+    if (l < map->num_layers &&
+        r < map->layers[l].num_rows &&
+        c < map->layers[l].num_columns)
+        return map->layers[l].tiles[r][c];
+    else
+        return -1;
 }
 
 tile_id map_tile_by_location(const struct map *map,

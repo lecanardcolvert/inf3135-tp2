@@ -120,6 +120,21 @@ struct layer *map_add_layer(struct map *map,
                             unsigned int num_rows,
                             unsigned int num_columns,
                             int dh, int dr, int dc);
+/**
+ * Set the tile associated with a triple index (l,r,c)
+ *
+ * @param map   The map
+ * @param l     The layer index
+ * @param r     The row index
+ * @param c     The column index
+ * @param tile  The tile id to set
+ */
+
+void map_set_tile_by_indices(struct map *map,
+                             unsigned int l,
+                             unsigned int r,
+                             unsigned int c,
+                             tile_id tile);
 
 /**
  * Return the tile associated with a triple index (l,r,c)
@@ -131,10 +146,10 @@ struct layer *map_add_layer(struct map *map,
  * @param r    The row index of the tile
  * @param c    The column index of the tile
  */
-tile_id map_tile_by_index(const struct map *map,
-                          unsigned int l,
-                          unsigned int r,
-                          unsigned int c);
+tile_id map_get_tile_by_indices(const struct map *map,
+                                unsigned int l,
+                                unsigned int r,
+                                unsigned int c);
 
 /**
  * Return the tile associated with a location (h,r,c)
