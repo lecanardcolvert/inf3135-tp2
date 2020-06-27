@@ -36,7 +36,13 @@ int main () {
        "tile at location (3,9,4) is 3");
     ok(map_get_tile_by_location(map, 2, 0, 0) == -1,
        "tile at location (2,0,0) is -1 (does not exist)");
+    ok(map_is_location_top_free(map, 0, 2, 2),
+       "location (0,2,2) is top free");
+    ok(map_is_location_top_free(map, 1, 2, 3),
+       "location (1,2,3) is top free");
+    ok(!map_is_location_top_free(map, 0, 2, 3),
+       "location (0,2,3) is not top free");
     diag("Deleting the map");
     map_delete(map);
-    return 0;
+    done_testing();
 }

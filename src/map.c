@@ -151,11 +151,12 @@ tile_id map_get_tile_by_location(const struct map *map,
     return -1;
 }
 
-bool map_has_empty_tile_above(const struct map *map,
-                              unsigned int row,
-                              unsigned int column,
-                              unsigned int layer) {
-    // TODO: not implemented
+bool map_is_location_top_free(const struct map *map,
+                              unsigned int h,
+                              unsigned int r,
+                              unsigned int c) {
+    return map_get_tile_by_location(map, h, r, c) > 0 &&
+           map_get_tile_by_location(map, h + 1, r, c) <= 0;
 }
 
 void map_print_layer(const struct layer *layer,

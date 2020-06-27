@@ -169,15 +169,19 @@ tile_id map_get_tile_by_location(const struct map *map,
                                  int c);
 
 /**
- * Return true if a tile has another tile above itself
+ * Return true if a location (h,r,c) has a top-free tile
  *
- * @param map     The map containing the tile
- * @param l       The layer index of the tile
- * @param r       The row index of the tile
- * @param c       The column index of the tile
+ * A location (h,r,c) has a top-free if is is occupied by a tile, but is not
+ * occupied by the location just above.
+ *
+ * @param map  The map
+ * @param h    The height
+ * @param r    The row index
+ * @param c    The column index
+ * @return     True if the location has a top-free tile
  */
-bool map_has_empty_tile_above(const struct map *map,
-                              unsigned int l,
+bool map_is_location_top_free(const struct map *map,
+                              unsigned int h,
                               unsigned int r,
                               unsigned int c);
 /**
