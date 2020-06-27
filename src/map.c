@@ -66,10 +66,12 @@ struct layer *map_add_layer(struct map *map,
                             int dh,
                             int dr,
                             int dc) {
-    struct layer *layer =
-        bsearch(&dh, map->layers, map->num_layers,
-                sizeof(struct layer), map_compare_layers);
-    if (layer != NULL) return NULL;
+    struct layer *layer;
+    for (layer = map->layers;
+         layer < map->layers + map->num_layers && layer->offset.dh < dh;
+         ++layer);
+    if (layer < map->layers && layer->offset.dh == dh)
+        return NULL;
     if (map->num_layers == map->capacity) {
         map->capacity *= 2;
         map->layers = realloc(map->layers,

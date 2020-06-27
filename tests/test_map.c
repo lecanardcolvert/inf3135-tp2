@@ -13,7 +13,6 @@ int main () {
     map_add_layer(map, 8, 4, 3, 2, 1);
     diag("Adding a 4x3 layer with offset (1,2,3)");
     map_add_layer(map, 4, 3, 1, 2, 3);
-    printf("# map->num_layers = %d\n", map->num_layers);
     ok(map->num_layers == 3, "map now has 3 layers");
     diag("Printing the map's content");
     map_print(map, "# ");
