@@ -163,10 +163,10 @@ tile_id map_get_tile_by_indices(const struct map *map,
  * @param r    The row
  * @param c    The column
  */
-tile_id map_tile_by_location(const struct map *map,
-                             unsigned int h,
-                             unsigned int r,
-                             unsigned int c);
+tile_id map_get_tile_by_location(const struct map *map,
+                                 int h,
+                                 int r,
+                                 int c);
 
 /**
  * Return true if a tile has another tile above itself

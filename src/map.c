@@ -20,6 +20,27 @@ int map_compare_layers(const void *layer1, const void *layer2) {
 }
 
 /**
+ * Return the layer at given height.
+ *
+ * If no such layer exists, return -1.
+ *
+ * @param map  The map containing the layer
+ * @return     The layer index if it exists
+ *             -1 otherwise
+ */
+int map_layer_by_height(const struct map *map,
+                        int h) {
+    for (int l = 0; l < map->num_layers; ++l) {
+        int dh = map->layers[l].offset.dh;
+        if (dh == h)
+            return l;
+        else if (dh > h)
+            return -1;
+    }
+    return -1;
+}
+
+/**
  * Delete a layer
  *
  * @param tile  The layer
@@ -114,11 +135,20 @@ tile_id map_get_tile_by_indices(const struct map *map,
         return -1;
 }
 
-tile_id map_tile_by_location(const struct map *map,
-                             unsigned int h,
-                             unsigned int r,
-                             unsigned int c) {
-    // TODO: not implemented
+tile_id map_get_tile_by_location(const struct map *map,
+                                 int h,
+                                 int r,
+                                 int c) {
+    int l = map_layer_by_height(map, h);
+    if (l != -1) {
+        int r2 = r - map->layers[l].offset.dr;
+        int c2 = c - map->layers[l].offset.dc;
+        if (r2 >= 0 && r2 < map->layers[l].num_rows &&
+            c2 >= 0 && c2 < map->layers[l].num_columns) {
+            return map->layers[l].tiles[r2][c2];
+        }
+    }
+    return -1;
 }
 
 bool map_has_empty_tile_above(const struct map *map,
