@@ -1,19 +1,42 @@
 stages:
-    - build
+    - build-source
+    - build-tests
     - test
 
-build:
-    stage: build
+build-source:
+    stage: build-source
     script:
         - apt-get update -qq
         - apt-get -y install libcairo2-dev
-        - make
+        - make -C src
+    artifacts:
+        paths:
+            - ./src/*.o
 
-test:
-    stage: test
+build-tests:
+    stage: build-tests
     script:
         - build_root=$PWD
         - cd /tmp && git clone https://github.com/zorgnax/libtap.git && cd libtap && make && make install
-        - ldconfig
         - cd $build_root
-        - make test
+        - ldconfig -v
+        - mkdir -p lib
+        - mv /usr/local/lib/libtap.so lib
+        - make -C tests
+    artifacts:
+        paths:
+            - ./tests/test_queue
+            - ./tests/test_map
+            - ./lib/libtap.so
+
+test-queue:
+    stage: test
+    script:
+        - mv lib/libtap.so /usr/local/lib/
+        - ./tests/test_queue
+
+test-map:
+    stage: test
+    script:
+        - mv lib/libtap.so /usr/local/lib/
+        - ./tests/test_map
