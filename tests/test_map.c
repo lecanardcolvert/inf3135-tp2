@@ -20,13 +20,16 @@ int main () {
     map_set_tile_by_indices(map, 2, 7, 3, 3);
     diag("Printing the map's content");
     map_print(map, "# ");
-    ok(map_get_tile_by_indices(map, 0, 2, 2) == 1, "map[0,2,2] == 1");
-    ok(map_get_tile_by_indices(map, 1, 0, 0) == 2, "map[1,0,0] == 2");
-    ok(map_get_tile_by_indices(map, 2, 7, 3) == 3, "map[2,7,3] == 3");
+    ok(map_get_tile_by_indices(map, 0, 2, 2) == 1,
+       "tile at (0,2,2) is 1");
+    ok(map_get_tile_by_indices(map, 1, 0, 0) == 2,
+       "tile at (1,0,0) is 2");
+    ok(map_get_tile_by_indices(map, 2, 7, 3) == 3,
+       "tile at (2,7,3) is 3");
     ok(map_get_tile_by_indices(map, 0, 5, 0) == -1,
-       "map[0,5,0] == -1 (out of bounds)");
+       "tile at (0,5,0) == -1 (out of bounds)");
     ok(map_get_tile_by_indices(map, 3, 0, 0) == -1,
-       "map[3,0,0] == -1 (out of bounds)");
+       "tile at (3,0,0) == -1 (out of bounds)");
     diag("Deleting the map");
     map_delete(map);
     return 0;
