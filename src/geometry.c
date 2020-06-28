@@ -1,6 +1,10 @@
 #include "geometry.h"
 #include <stdio.h>
 
+void geometry_print_location(const struct location *l) {
+    printf("(%d,%d,%d)", l->x, l->y, l->z);
+}
+
 void geometry_print_vect(const struct vect *v) {
     printf("(%d,%d,%d)", v->dx, v->dy, v->dz);
 }

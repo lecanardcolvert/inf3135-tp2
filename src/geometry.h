@@ -25,6 +25,13 @@ struct vect {
 // --------- //
 
 /**
+ * Print a location to stdout
+ *
+ * @param v  The location to print
+ */
+void geometry_print_location(const struct location *l);
+
+/**
  * Print a vector to stdout
  *
  * @param v  The vector to print
