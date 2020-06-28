@@ -1,47 +1,22 @@
 stages:
-    - build-source
-    - build-tests
+    - build
     - test
 
-build-source:
-    stage: build-source
-    script:
-        - apt-get update -qq
-        - apt-get -y install libcairo2-dev
-        - make -C src
-    artifacts:
-        paths:
-            - ./src/*.o
+before_script:
+    - apt-get update -qq
+    - apt-get -y install libcairo2-dev
+    - apt-get -y install libjansson-dev
+    - build_root=$(pwd)
+    - cd /tmp && git clone https://github.com/zorgnax/libtap.git && cd libtap && make && make install
+    - cd "$build_root"
+    - ldconfig -v
 
-build-tests:
-    stage: build-tests
+build:
+    stage: build
     script:
-        - build_root=$PWD
-        - cd /tmp && git clone https://github.com/zorgnax/libtap.git && cd libtap && make && make install
-        - cd $build_root
-        - ldconfig -v
-        - mkdir -p lib
-        - mv /usr/local/lib/libtap.so lib
-        - make -C tests
-    artifacts:
-        paths:
-            - ./tests/test_*
-            - ./lib/libtap.so
+        - make
 
-test-queue:
+test:
     stage: test
     script:
-        - mv lib/libtap.so /usr/local/lib/
-        - ./tests/test_queue
-
-test-map:
-    stage: test
-    script:
-        - mv lib/libtap.so /usr/local/lib/
-        - ./tests/test_map
-
-test-tile:
-    stage: test
-    script:
-        - mv lib/libtap.so /usr/local/lib/
-        - ./tests/test_tile
+        - make test
