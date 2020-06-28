@@ -25,8 +25,7 @@ build-tests:
         - make -C tests
     artifacts:
         paths:
-            - ./tests/test_queue
-            - ./tests/test_map
+            - ./tests/test_*
             - ./lib/libtap.so
 
 test-queue:
