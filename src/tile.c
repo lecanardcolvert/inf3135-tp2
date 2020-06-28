@@ -47,13 +47,15 @@ void tile_print_tileset(const struct tileset *tileset,
     }
 }
 
-void tile_add_to_tileset(struct tileset *tileset,
-                         tile_id id) {
+struct tile *tile_add_to_tileset(struct tileset *tileset,
+                                 tile_id id,
+                                 const char *filename) {
     unsigned int i;
     for (i = 0;
          i < tileset->num_tiles && tileset->tiles[i].id < id;
          ++i);
-    if (i < tileset->num_tiles && tileset->tiles[i].id == id) return;
+    if (i < tileset->num_tiles && tileset->tiles[i].id == id)
+        return NULL;
     if (tileset->num_tiles == tileset->capacity) {
         tileset->capacity *= 2;
         tileset->tiles = realloc(tileset->tiles,
@@ -63,10 +65,12 @@ void tile_add_to_tileset(struct tileset *tileset,
         tileset->tiles[j] = tileset->tiles[j - 1];
     }
     tileset->tiles[i].id = id;
+    tileset->tiles[i].filename = filename;
     tileset->tiles[i].directions = malloc(sizeof(struct vect));
     tileset->tiles[i].num_directions = 0;
     tileset->tiles[i].capacity = 1;
     ++tileset->num_tiles;
+    return tileset->tiles + i;
 }
 
 void tile_add_direction(struct tileset *tileset, tile_id id,

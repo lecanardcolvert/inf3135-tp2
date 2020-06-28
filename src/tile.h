@@ -11,6 +11,7 @@
  */
 struct tile {
     tile_id id;                  // The tile id
+    const char *filename;        // The filename of the image for the tile
     struct vect *directions;     // The allowed directions
     unsigned int num_directions; // The number of allowed directions
     unsigned int capacity;       // The directions capacity
@@ -54,11 +55,14 @@ void tile_print_tileset(const struct tileset *tileset,
 /**
  * Add a tile to a tileset
  *
- * @param tileset  The tileset
- * @param id       The id of the added tile
+ * @param tileset   The tileset
+ * @param id        The id of the added tile
+ * @param filename  The image filename of the tile
+ * @return          The tile or NULL
  */
-void tile_add_to_tileset(struct tileset *tileset,
-                         tile_id id);
+struct tile *tile_add_to_tileset(struct tileset *tileset,
+                                 tile_id id,
+                                 const char *filename);
 
 /**
  * Add an allowed direction to a tile in a tileset
