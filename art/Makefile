@@ -1,12 +1,13 @@
-tiles = end.png flat.png ne.png nw.png se.png start.png sw.png
-small_tiles = $(patsubst %.png, %-small.png, $(tiles))
+names = end flat ne nw se start sw
+large_tiles = $(patsubst %, %-256x256.png, $(names))
+small_tiles = $(patsubst %, %-64x64.png, $(names))
 
 .PHONY: all
 	
-all: $(small_tiles)
+all: tileset-64x64.png tileset-256x256.png
 
-$(small_tiles): %-small.png: %.png
-	convert $< -resize 25% $@
+tileset-64x64.png: $(small_tiles)
+	montage $^ -tile x1 -geometry 64x64+0+0 -background transparent $@
 
-tileset.png: $(tiles)
-	montage $(tiles) -tile x1 -geometry 256x256+0+0 -background transparent tileset.png
+tileset-256x256.png: $(large_tiles)
+	montage $^ -tile x1 -geometry 256x256+0+0 -background transparent $@
