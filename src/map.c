@@ -172,7 +172,7 @@ void map_print(const struct map *map, const char *prefix) {
 
 const struct location *map_get_occupied_location(const struct map *map,
                                                  bool from_start) {
-    static int l = 0, r = 0, c = 0;
+    static unsigned int l = 0, r = 0, c = 0;
     static struct location location;
     if (from_start) {
         l = 0; r = 0; c = -1;
