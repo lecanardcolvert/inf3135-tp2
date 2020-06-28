@@ -40,3 +40,9 @@ test-map:
     script:
         - mv lib/libtap.so /usr/local/lib/
         - ./tests/test_map
+
+test-tile:
+    stage: test
+    script:
+        - mv lib/libtap.so /usr/local/lib/
+        - ./tests/test_tile
