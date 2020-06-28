@@ -34,6 +34,17 @@ int main () {
        "location (3,4,1) is top free");
     ok(!map_is_location_top_free(map, 0, 0, 0),
        "location (0,0,0) is not top free");
+    printf("# All occupied locations: ");
+    unsigned int n = 0;
+    for (const struct location *location = map_get_occupied_location(map, true);
+         location != NULL;
+         location = map_get_occupied_location(map, false)) {
+        geometry_print_location(location);
+        printf(" ");
+        ++n;
+    }
+    printf("\n");
+    ok(n == 3, "number of occupied locations is 3");
     diag("Deleting the map");
     map_delete(map);
     done_testing();

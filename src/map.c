@@ -169,3 +169,24 @@ void map_print(const struct map *map, const char *prefix) {
         map_print_layer(&map->layers[i], prefix);
     }
 }
+
+const struct location *map_get_occupied_location(const struct map *map,
+                                                 bool from_start) {
+    static int l = 0, r = 0, c = 0;
+    static struct location location;
+    if (from_start) {
+        l = 0; r = 0; c = -1;
+    }
+    do {
+        ++c;
+        if (c == map->layers[l].num_columns)
+            {++r; c = 0;}
+        if (r == map->layers[l].num_rows)
+            {++l; r = 0;}
+        if (l == map->num_layers) return NULL;
+    } while (map->layers[l].tiles[r][c] == 0);
+    location.x = r + map->layers[l].offset.dx;
+    location.y = c + map->layers[l].offset.dy;
+    location.z = map->layers[l].offset.dz;
+    return &location;
+}
