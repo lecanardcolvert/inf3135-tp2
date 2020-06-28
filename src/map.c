@@ -15,12 +15,12 @@
  *                >0 if the first layer is higher than the second
  */
 int map_compare_layers(const void *layer1, const void *layer2) {
-    return ((struct layer*)layer1)->offset.dh -
-           ((struct layer*)layer2)->offset.dh;
+    return ((struct layer*)layer1)->offset.dz -
+           ((struct layer*)layer2)->offset.dz;
 }
 
 /**
- * Return the layer at given height.
+ * Return the index of the layer at given height.
  *
  * If no such layer exists, return -1.
  *
@@ -29,12 +29,12 @@ int map_compare_layers(const void *layer1, const void *layer2) {
  *             -1 otherwise
  */
 int map_layer_by_height(const struct map *map,
-                        int h) {
+                        int z) {
     for (int l = 0; l < (int)map->num_layers; ++l) {
-        int dh = map->layers[l].offset.dh;
-        if (dh == h)
+        int dz = map->layers[l].offset.dz;
+        if (dz == z)
             return l;
-        else if (dh > h)
+        else if (dz > z)
             return -1;
     }
     return -1;
@@ -84,14 +84,12 @@ void map_delete(struct map *map) {
 struct layer *map_add_layer(struct map *map,
                             unsigned int num_rows,
                             unsigned int num_columns,
-                            int dh,
-                            int dr,
-                            int dc) {
+                            int dx, int dy, int dz) {
     struct layer *layer;
     for (layer = map->layers;
-         layer < map->layers + map->num_layers && layer->offset.dh < dh;
+         layer < map->layers + map->num_layers && layer->offset.dz < dz;
          ++layer);
-    if (layer < map->layers && layer->offset.dh == dh)
+    if (layer < map->layers && layer->offset.dz == dz)
         return NULL;
     if (map->num_layers == map->capacity) {
         map->capacity *= 2;
@@ -99,12 +97,12 @@ struct layer *map_add_layer(struct map *map,
                               map->capacity * sizeof(struct layer));
     }
     for (layer = map->layers + map->num_layers;
-         layer > map->layers && (layer - 1)->offset.dh > dh;
+         layer > map->layers && (layer - 1)->offset.dz > dz;
          --layer)
         *layer = *(layer - 1);
     layer->num_rows = num_rows;
     layer->num_columns = num_columns;
-    layer->offset = (struct direction){dh, dr, dc};
+    layer->offset = (struct vect){dx, dy, dz};
     layer->tiles = malloc(num_rows * sizeof(tile_id*));
     for (unsigned int i = 0; i < num_rows; ++i)
         layer->tiles[i] = calloc(num_columns, sizeof(tile_id));
@@ -112,51 +110,39 @@ struct layer *map_add_layer(struct map *map,
     return layer;
 }
 
-void map_set_tile_by_indices(struct map *map,
-                             unsigned int l,
-                             unsigned int r,
-                             unsigned int c,
-                             tile_id tile) {
-    assert(l < map->num_layers);
-    assert(r < map->layers[l].num_rows);
-    assert(c < map->layers[l].num_columns);
-    map->layers[l].tiles[r][c] = tile;
-}
-
-tile_id map_get_tile_by_indices(const struct map *map,
-                                unsigned int l,
-                                unsigned int r,
-                                unsigned int c) {
-    if (l < map->num_layers &&
-        r < map->layers[l].num_rows &&
-        c < map->layers[l].num_columns)
-        return map->layers[l].tiles[r][c];
-    else
-        return -1;
-}
-
 tile_id map_get_tile_by_location(const struct map *map,
-                                 int h,
-                                 int r,
-                                 int c) {
-    int l = map_layer_by_height(map, h);
+                                 int x, int y, int z) {
+    int l = map_layer_by_height(map, z);
     if (l != -1) {
-        int r2 = r - map->layers[l].offset.dr;
-        int c2 = c - map->layers[l].offset.dc;
-        if (r2 >= 0 && r2 < (int)map->layers[l].num_rows &&
-            c2 >= 0 && c2 < (int)map->layers[l].num_columns) {
-            return map->layers[l].tiles[r2][c2];
+        int x2 = x - map->layers[l].offset.dx;
+        int y2 = y - map->layers[l].offset.dy;
+        if (x2 >= 0 && x2 < (int)map->layers[l].num_rows &&
+            y2 >= 0 && y2 < (int)map->layers[l].num_columns) {
+            return map->layers[l].tiles[x2][y2];
         }
     }
     return -1;
 }
 
+void map_set_tile_by_location(const struct map *map,
+                              int x, int y, int z,
+                              tile_id tile) {
+    int l = map_layer_by_height(map, z);
+    if (l != -1) {
+        int x2 = x - map->layers[l].offset.dx;
+        int y2 = y - map->layers[l].offset.dy;
+        if (x2 >= 0 && x2 < (int)map->layers[l].num_rows &&
+            y2 >= 0 && y2 < (int)map->layers[l].num_columns) {
+            map->layers[l].tiles[x2][y2] = tile;
+        }
+    }
+}
+
+
 bool map_is_location_top_free(const struct map *map,
-                              unsigned int h,
-                              unsigned int r,
-                              unsigned int c) {
-    return map_get_tile_by_location(map, h, r, c) > 0 &&
-           map_get_tile_by_location(map, h + 1, r, c) <= 0;
+                              int x, int y, int z) {
+    return map_get_tile_by_location(map, x, y, z) > 0 &&
+           map_get_tile_by_location(map, x, y, z + 1) <= 0;
 }
 
 void map_print_layer(const struct layer *layer,
@@ -165,7 +151,7 @@ void map_print_layer(const struct layer *layer,
            layer->num_rows, layer->num_rows <= 1 ? "" : "s",
            layer->num_columns, layer->num_columns <= 1 ? "" : "s");
     printf(" (offset = (%d,%d,%d))\n",
-           layer->offset.dh, layer->offset.dr, layer->offset.dc);
+           layer->offset.dx, layer->offset.dy, layer->offset.dz);
     for (unsigned int i = 0; i < layer->num_rows; ++i) {
         printf("%s    ", prefix);
         for (unsigned int j = 0; j < layer->num_columns; ++j) {
