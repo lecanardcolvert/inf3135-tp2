@@ -76,12 +76,12 @@ void isomap_load_map(struct isomap *isomap, const json_t *json_layers) {
 // Functions //
 // --------- //
 
-struct isomap *isomap_create_from_json_file(const char *filename) {
+struct isomap *isomap_create_from_json_file(FILE *file) {
     struct isomap *isomap;
 
     json_t *json_root, *json_tileset, *json_layers;
     json_error_t error;
-    json_root = json_load_file(filename, 0, &error);
+    json_root = json_loadf(file, 0, &error);
     json_tileset = json_object_get(json_root, "tileset");
     json_layers = json_object_get(json_root, "layers");
     isomap = malloc(sizeof(struct isomap));
@@ -94,6 +94,12 @@ struct isomap *isomap_create_from_json_file(const char *filename) {
     isomap_load_tileset(isomap, json_tileset);
     isomap_load_map(isomap, json_layers);
     return isomap;
+}
+
+void isomap_delete(struct isomap *isomap) {
+    tile_delete_tileset(isomap->tileset);
+    map_delete(isomap->map);
+    free(isomap);
 }
 
 void isomap_draw_to_png(const struct isomap *isomap,
@@ -136,8 +142,7 @@ void isomap_draw_to_png(const struct isomap *isomap,
     cairo_surface_destroy(output_image);
 }
 
-void isomap_delete(struct isomap *isomap) {
-    tile_delete_tileset(isomap->tileset);
-    map_delete(isomap->map);
-    free(isomap);
+void isomap_print(FILE *stream, const struct isomap *isomap, const char *prefix) {
+    tile_print_tileset(stream, isomap->tileset, prefix);
+    map_print(stream, isomap->map, prefix);
 }

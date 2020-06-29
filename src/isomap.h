@@ -8,6 +8,8 @@
 #ifndef ISOMAP_H
 #define ISOMAP_H
 
+#include <stdio.h>
+
 // Types //
 // ----- //
 
@@ -24,10 +26,17 @@ struct isomap {
 /**
  * Create an isomap from a JSON file
  *
- * @param filename  The JSON filename
- * @return          The resulting isomap
+ * @param file  The input stream
+ * @return      The resulting isomap
  */
-struct isomap *isomap_create_from_json_file(const char *filename);
+struct isomap *isomap_create_from_json_file(FILE *file);
+
+/**
+ * Delete an isomap
+ *
+ * @param isomap  The isomap
+ */
+void isomap_delete(struct isomap *isomap);
 
 /**
  * Draw an isomap to a PNG file
@@ -39,10 +48,14 @@ void isomap_draw_to_png(const struct isomap *isomap,
                         const char *output_filename);
 
 /**
- * Delete an isomap
+ * Print an isomap to a stream
  *
- * @param isomap  The isomap
+ * @param stream  The stream
+ * @param isomap  The map
+ * @param prefix  The prefix to print for each line
  */
-void isomap_delete(struct isomap *isomap);
+void isomap_print(FILE *stream,
+                  const struct isomap *isomap,
+                  const char *prefix);
 
 #endif
