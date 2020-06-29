@@ -21,6 +21,13 @@ void geometry_print_box(FILE *stream, const struct box *v) {
             v->xmax, v->ymax, v->zmax);
 }
 
+bool geometry_equal_location(const struct location *l1,
+                             const struct location *l2) {
+    return l1->x == l2->x &&
+           l1->y == l2->y &&
+           l1->z == l2->z;
+}
+
 bool geometry_equal_vect(const struct vect *v1,
                          const struct vect *v2) {
     return v1->dx == v2->dx &&

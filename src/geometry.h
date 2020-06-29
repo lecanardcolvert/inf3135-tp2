@@ -70,6 +70,17 @@ void geometry_print_vect(FILE *stream, const struct vect *v);
 void geometry_print_box(FILE *stream, const struct box *b);
 
 /**
+ * Indicate if two locations are equal
+ *
+ * @param l1  The first location
+ * @param l2  The second location
+ * @return    true if the two locations are the same
+ *            false otherwise
+ */
+bool geometry_equal_location(const struct location *l1,
+                             const struct location *l2);
+
+/**
  * Indicate if two vectors are equal
  *
  * @param v1  The first vector
