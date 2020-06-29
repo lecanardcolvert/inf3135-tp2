@@ -111,7 +111,6 @@ void isomap_draw_to_png(const struct isomap *isomap,
     cairo_surface_t *output_image =
         cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
                                    surface_width, surface_height);
-    printf("surface width = %d, surface height = %d\n", surface_width, surface_height);
     cairo_t *cr = cairo_create(output_image);
     cairo_set_source_rgb(cr, 0, 0.1, 0);
     cairo_rectangle(cr, 0, 0, surface_width, surface_height);
