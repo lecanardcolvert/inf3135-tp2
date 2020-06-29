@@ -194,6 +194,16 @@ const struct location *map_get_occupied_location(const struct map *map,
     return &location;
 }
 
+const struct location *map_get_top_free_location(const struct map *map,
+                                                 bool from_start) {
+    static const struct location *location;
+    location = map_get_occupied_location(map, from_start);
+    while (location != NULL &&
+           !map_is_location_top_free(map, location->x, location->y, location->z))
+        location = map_get_occupied_location(map, false);
+    return location;
+}
+
 struct box map_get_bounding_box(const struct map *map) {
     const struct location *location = map_get_occupied_location(map, true);
     struct box box = {0, 0, 0, -1, -1, -1};

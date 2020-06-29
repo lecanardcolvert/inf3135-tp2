@@ -164,7 +164,7 @@ bool map_is_location_top_free(const struct map *map,
                               int x, int y, int z);
 
 /**
- * Allow iteration over all locations of a map
+ * Allow iteration over all locations of a map occupied by a tile
  *
  * The function should be used as follows:
  *
@@ -178,6 +178,24 @@ bool map_is_location_top_free(const struct map *map,
  *              If false, returns the next available location or NULL
  */
 const struct location *map_get_occupied_location(const struct map *map,
+                                                 bool from_start);
+
+/**
+ * Allow iteration over all top-free locations of a map
+ *
+ * The function should be used as follows:
+ *
+ * * The first call should be done with `from_start` set to `true`
+ * * The next calls with `from_start` set to `false`
+ * * When the returned value is `NULL`, it means that all top-free locations
+ *   have been iterated over
+ *
+ * @param map   The map
+ * @param next  If true, starts from the first location
+ *              If false, returns the next available location or NULL
+ */
+
+const struct location *map_get_top_free_location(const struct map *map,
                                                  bool from_start);
 
 /**
