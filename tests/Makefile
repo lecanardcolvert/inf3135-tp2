@@ -28,3 +28,4 @@ test: all
 	./test_map
 	./test_tile
 	./test_isomap
+	./test_graph
