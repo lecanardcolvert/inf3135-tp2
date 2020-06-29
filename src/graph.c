@@ -25,6 +25,7 @@ void graph_add_isolated_node(struct graph *graph,
                                graph->capacity * sizeof(struct graph_node));
     }
     struct graph_node *node = graph->nodes + graph->num_nodes;
+    node->index = graph->num_nodes;
     node->tile = tile;
     node->location = *location;
     node->neighbors = malloc(sizeof(struct graph_node*));
@@ -114,6 +115,22 @@ void graph_print_node(FILE *stream, const struct graph_node *node, const char *p
     }
 }
 
+/**
+ * Return the node at the given location in a graph
+ *
+ * If no such node exists, return NULL.
+ *
+ * @param graph     The graph
+ * @param location  The location
+ */
+struct graph_node *graph_get_node(const struct graph *graph,
+                                  const struct location *location) {
+    for (unsigned int i = 0; i < graph->num_nodes; ++i)
+        if (geometry_equal_location(&graph->nodes[i].location, location))
+            return graph->nodes + i;
+    return NULL;
+}
+
 // Functions //
 // --------- //
 
@@ -145,81 +162,83 @@ void graph_print(FILE *stream, const struct graph *graph, const char *prefix) {
     }
 }
 
-//struct map_path *mapgraph_retrieve_path(struct map_cell_node **predecessors,
-//                                        unsigned int start_index,
-//                                        unsigned int end_index,
-//                                        const struct map_cell *end_cell) {
-//    if (predecessors[end_index] == NULL) {
-//        return NULL;
-//    } else {
-//        unsigned int index = end_index;
-//        struct map_path *path = malloc(sizeof(struct map_path));
-//        path->head = *end_cell;
-//        path->tail = NULL;
-//        while (index != start_index) {
-//            struct map_path *tmp_path = malloc(sizeof(struct map_path));
-//            tmp_path->head = predecessors[index]->cell;
-//            tmp_path->tail = path;
-//            path = tmp_path;
-//            index = predecessors[index]->index;
-//        }
-//        return path;
-//    }
-//}
-//
-//struct map_path *mapgraph_shortest_path(const struct map_graph *graph,
-//                                        const struct map_cell *start,
-//                                        const struct map_cell *end) {
-//    assert(start->row    < graph->map->num_rows);
-//    assert(start->column < graph->map->num_columns);
-//    assert(start->layer  < graph->map->num_layers);
-//    assert(end->row      < graph->map->num_rows);
-//    assert(end->column   < graph->map->num_columns);
-//    assert(end->layer    < graph->map->num_layers);
-//    struct map_cell_node *predecessors[graph->num_nodes];
-//    int distance[graph->num_nodes];
-//    for (unsigned int i = 0; i < graph->num_nodes; ++i) {
-//        predecessors[i] = NULL;
-//        distance[i] = -1;
-//    }
-//    struct map_cell_node *start_node = mapgraph_get_node(graph, start);
-//    queue q;
-//    queue_initialize(&q);
-//    queue_push(&q, start_node);
-//    distance[start_node->index] = 0;
-//    predecessors[start_node->index] = start_node;
-//    while (!queue_is_empty(&q)) {
-//        struct map_cell_node *node = queue_pop(&q);
-//        for (unsigned int i = 0; i < node->num_neighbors; ++i) {
-//            struct map_cell_node *neighbor = node->neighbors[i];
-//            unsigned int index = neighbor->index;
-//            if (distance[index] == -1) {
-//                distance[index] = distance[node->index] + 1;
-//                predecessors[index] = node;
-//                queue_push(&q, neighbor);
-//            }
-//        }
-//    }
-//    struct map_path *path
-//        = mapgraph_retrieve_path(predecessors, start_node->index,
-//                                 mapgraph_get_node(graph, end)->index, end);
-//    return path;
-//}
-//
-//void mapgraph_print_path(const struct map_path *path) {
-//    printf("[ ");
-//    while (path != NULL) {
-//        printf("(%d,%d,%d) ", path->head.row,
-//                              path->head.column,
-//                              path->head.layer);
-//        path = path->tail;
-//    }
-//    printf("]");
-//}
-//
-//void mapgraph_delete_path(struct map_path *path) {
-//    if (path != NULL) {
-//        mapgraph_delete_path(path->tail);
-//        free(path);
-//    }
-//}
+struct graph_walk *graph_retrieve_walk(struct graph_node **predecessors,
+                                       struct graph_node *start_node,
+                                       struct graph_node *end_node) {
+    if (predecessors[end_node->index] == NULL) {
+        return NULL;
+    } else {
+        struct graph_walk *walk = malloc(sizeof(struct graph_walk));
+        walk->capacity = 1;
+        walk->num_nodes = 0;
+        walk->nodes = malloc(sizeof(struct graph_node*));
+        struct graph_node *node = end_node;
+        bool over = false;
+        while (true) {
+            if (node == start_node) over = true;
+            if (walk->capacity == walk->num_nodes) {
+                walk->capacity *= 2;
+                walk->nodes = realloc(walk->nodes,
+                                      walk->capacity * sizeof(struct graph_node*));
+            }
+            walk->nodes[walk->num_nodes] = node;
+            ++walk->num_nodes;
+            if (over) break;
+            node = predecessors[node->index];
+        }
+        unsigned int n = walk->num_nodes;
+        unsigned int h = n / 2;
+        for (unsigned int i = 0; i < h; ++i) {
+            struct graph_node *temp = walk->nodes[i];
+            walk->nodes[i] = walk->nodes[n - i - 1];
+            walk->nodes[n - i - 1] = temp;
+        }
+        return walk;
+    }
+}
+
+struct graph_walk *graph_shortest_walk(const struct graph *graph,
+                                       const struct location *start,
+                                       const struct location *end) {
+    struct graph_node *predecessors[graph->num_nodes];
+    int distance[graph->num_nodes];
+    for (unsigned int i = 0; i < graph->num_nodes; ++i) {
+        predecessors[i] = NULL;
+        distance[i] = -1;
+    }
+    struct graph_node *start_node = graph_get_node(graph, start);
+    queue q;
+    queue_initialize(&q);
+    queue_push(&q, start_node);
+    distance[start_node->index] = 0;
+    predecessors[start_node->index] = start_node;
+    while (!queue_is_empty(&q)) {
+        struct graph_node *node = queue_pop(&q);
+        for (unsigned int i = 0; i < node->num_neighbors; ++i) {
+            struct graph_node *neighbor = node->neighbors[i];
+            unsigned int index = neighbor->index;
+            if (distance[index] == -1) {
+                distance[index] = distance[node->index] + 1;
+                predecessors[index] = node;
+                queue_push(&q, neighbor);
+            }
+        }
+    }
+    struct graph_walk *walk =
+        graph_retrieve_walk(predecessors, start_node, graph_get_node(graph, end));
+    return walk;
+}
+
+void graph_print_walk(FILE *stream, const struct graph_walk *walk, const char *prefix) {
+    fprintf(stream, "%swalk of %d nodes: [ ", prefix, walk->num_nodes);
+    for (unsigned int i = 0; i < walk->num_nodes; ++i) {
+        geometry_print_location(stream, &walk->nodes[i]->location);
+        printf(" ");
+    }
+    printf("]\n");
+}
+
+void graph_delete_walk(struct graph_walk *walk) {
+    free(walk->nodes);
+    free(walk);
+}

@@ -38,6 +38,7 @@
  * A node in a map graph
  */
 struct graph_node {
+    unsigned int index;            // The index of the node in the graph
     const struct tile *tile;       // The tile stored in the node
     struct location location;      // The location of the tile
     struct graph_node **neighbors; // The neighbors of this node
@@ -60,9 +61,9 @@ struct graph {
  * A walk (directed path) in the graph
  */
 struct graph_walk {
-    struct graph_node *nodes; // The first node in the walk
-    unsigned int length;      // The number of steps in the walk
-    unsigned int capacity;    // The nodes capacity
+    struct graph_node **nodes; // The first node in the walk
+    unsigned int num_nodes;    // The number of steps in the walk
+    unsigned int capacity;     // The nodes capacity
 };
 
 // Functions //
@@ -116,8 +117,8 @@ void graph_print(FILE *stream,
  * @return       A shortest walk between two cells
  */
 struct graph_walk *graph_shortest_walk(const struct graph *graph,
-                                       struct location start,
-                                       struct location end);
+                                       const struct location *start,
+                                       const struct location *end);
 
 /**
  * Delete the given walk
@@ -127,10 +128,14 @@ struct graph_walk *graph_shortest_walk(const struct graph *graph,
 void graph_delete_walk(struct graph_walk *walk);
 
 /**
- * Print the given walk to stdout
+ * Print the given walk to a stream
  *
- * @param walk  The walk to be printed
+ * @param stream  The stream
+ * @param walk    The walk to print
+ * @param prefix  The prefix to print for each line
  */
-void graph_print_walk(const struct graph_walk *walk);
+void graph_print_walk(FILE *stream,
+                      const struct graph_walk *walk,
+                      const char *prefix);
 
 #endif
