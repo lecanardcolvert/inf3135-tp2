@@ -2,6 +2,7 @@
 #include "map.h"
 #include "tile.h"
 #include <jansson.h>
+#include <cairo.h>
 
 // Help functions //
 // -------------- //
@@ -84,11 +85,56 @@ struct isomap *isomap_create_from_json_file(const char *filename) {
     json_tileset = json_object_get(json_root, "tileset");
     json_layers = json_object_get(json_root, "layers");
     isomap = malloc(sizeof(struct isomap));
+    isomap->tile_width
+        = json_integer_value(json_object_get(json_root, "tile-width"));
+    isomap->z_offset
+        = json_integer_value(json_object_get(json_root, "z-offset"));
     isomap->tileset = tile_create_tileset();
     isomap->map = map_create();
     isomap_load_tileset(isomap, json_tileset);
     isomap_load_map(isomap, json_layers);
     return isomap;
+}
+
+void isomap_draw_to_png(const struct isomap *isomap,
+                        const char *output_filename) {
+    struct box bounding_box = map_get_bounding_box(isomap->map);
+    struct vect box_vect = geometry_box_to_vect(&bounding_box);
+    int h_step = isomap->tile_width / 2;
+    int v_step = isomap->tile_width / 4;
+    int l_step = isomap->z_offset;
+
+    unsigned int surface_width
+        = h_step * (box_vect.dx + box_vect.dy + 3);
+    unsigned int surface_height
+        = v_step * (box_vect.dx + box_vect.dy + 2) + l_step * (box_vect.dz + 2);
+    cairo_surface_t *output_image =
+        cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
+                                   surface_width, surface_height);
+    printf("surface width = %d, surface height = %d\n", surface_width, surface_height);
+    cairo_t *cr = cairo_create(output_image);
+    cairo_set_source_rgb(cr, 0, 0.1, 0);
+    cairo_rectangle(cr, 0, 0, surface_width, surface_height);
+    cairo_fill(cr);
+    const struct location *location;
+    for (location = map_get_occupied_location(isomap->map, true);
+         location != NULL;
+         location = map_get_occupied_location(isomap->map, false)) {
+        int origin_x = h_step * (box_vect.dx + 0.5);
+        int origin_y = (box_vect.dz - location->z) * l_step;
+        int x = origin_x - location->x * h_step + location->y * h_step;
+        int y = origin_y + location->x * v_step + location->y * v_step;
+        tile_id id = map_get_tile_by_location(isomap->map, location->x,
+                                              location->y, location->z);
+        struct tile *tile = tile_by_id(isomap->tileset, id);
+        if (tile->surface == NULL) {
+            tile->surface = cairo_image_surface_create_from_png(tile->filename);
+        }
+        cairo_set_source_surface(cr, tile->surface, x, y);
+        cairo_paint(cr);
+    }
+    cairo_surface_write_to_png(output_image, output_filename);
+    cairo_surface_destroy(output_image);
 }
 
 void isomap_delete(struct isomap *isomap) {
