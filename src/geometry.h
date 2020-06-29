@@ -21,6 +21,18 @@ struct vect {
     int dz; // The z variation
 };
 
+/**
+ * A box in the 3D space
+ */
+struct box {
+    int xmin; // The minimum x-coordinate
+    int ymin; // The minimum y-coordinate
+    int zmin; // The minimum z-coordinate
+    int xmax; // The maximum x-coordinate
+    int ymax; // The maximum y-coordinate
+    int zmax; // The maximum z-coordinate
+};
+
 // Functions //
 // --------- //
 
@@ -37,6 +49,13 @@ void geometry_print_location(const struct location *l);
  * @param v  The vector to print
  */
 void geometry_print_vect(const struct vect *v);
+
+/**
+ * Print a box to stdout
+ *
+ * @param b  The box
+ */
+void geometry_print_box(const struct box *b);
 
 /**
  * Indicate if two vectors are equal
