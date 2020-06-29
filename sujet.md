@@ -220,5 +220,4 @@ La pondération pour chacune des tâches est distribuée comme suit:
 | Tâche 2: `dot-output`     |      2        |     8     |     2     |       8        |    20     |
 | Tâche 3: `validate-json`  |      5        |    10     |     5     |      10        |    30     |
 | Tâche 4: `draw-walk`      |      5        |    10     |     5     |      10        |    30     |
-| ------------------------- | ------------- | --------- | --------- | -------------- | --------- |
-| **Total**                 |     12        |    36     |    14     |      38        | **100**   |
+| **Total**                 |   **12**      |  **36**   |  **14**   |    **38**      | **100**   |
