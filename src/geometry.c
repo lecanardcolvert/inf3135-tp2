@@ -1,6 +1,12 @@
 #include "geometry.h"
 #include <stdio.h>
 
+struct vect geometry_box_to_vect(const struct box *b) {
+    return (struct vect){b->xmax - b->xmin,
+                         b->ymax - b->ymin,
+                         b->zmax - b->zmin};
+}
+
 void geometry_print_location(const struct location *l) {
     printf("location(%d,%d,%d)", l->x, l->y, l->z);
 }

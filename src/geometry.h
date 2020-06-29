@@ -37,6 +37,14 @@ struct box {
 // --------- //
 
 /**
+ * Return the vector of a box
+ *
+ * @param b  The box
+ * @return   The associated vector
+ */
+struct vect geometry_box_to_vect(const struct box *b);
+
+/**
  * Print a location to stdout
  *
  * @param v  The location to print
