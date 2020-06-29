@@ -190,3 +190,23 @@ const struct location *map_get_occupied_location(const struct map *map,
     location.z = map->layers[l].offset.dz;
     return &location;
 }
+
+struct box map_get_bounding_box(const struct map *map) {
+    const struct location *location = map_get_occupied_location(map, true);
+    struct box box = {0, 0, 0, -1, -1, -1};
+    if (location != NULL) {
+        int xmin = location->x, xmax = location->x;
+        int ymin = location->y, ymax = location->y;
+        int zmin = location->z, zmax = location->z;
+        while ((location = map_get_occupied_location(map, false)) != NULL) {
+            xmin = location->x < xmin ? location->x : xmin;
+            xmax = location->x > xmax ? location->x : xmax;
+            ymin = location->y < ymin ? location->y : ymin;
+            ymax = location->y > ymax ? location->y : ymax;
+            zmin = location->z < zmin ? location->z : zmin;
+            zmax = location->z > zmax ? location->z : zmax;
+        }
+        box = (struct box){xmin, ymin, zmin, xmax, ymax, zmax};
+    }
+    return box;
+}

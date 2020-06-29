@@ -179,4 +179,17 @@ bool map_is_location_top_free(const struct map *map,
 const struct location *map_get_occupied_location(const struct map *map,
                                                  bool from_start);
 
+/**
+ * Return the bounding box dimensions of a map
+ *
+ * The bounding box of the map is the smallest 3D rectangle that contains all
+ * its nonempty tiles.
+ *
+ * If all tiles are empty, return a dummy box.
+ *
+ * @param map  The map
+ * @return     The bounding box dimensions
+ */
+struct box map_get_bounding_box(const struct map *map);
+
 #endif

@@ -45,6 +45,12 @@ int main () {
     }
     printf("\n");
     ok(n == 3, "number of occupied locations is 3");
+    struct box b = map_get_bounding_box(map);
+    diag("Computing bounding box");
+    ok(b.xmin == 2 && b.ymin == 2 && b.zmin == 0,
+       "bounding box minimum coordinates are (2,2,0)");
+    ok(b.xmax == 7 && b.ymax == 4 && b.zmax == 3,
+       "bounding box maximum coordinates are (7,4,3)");
     diag("Deleting the map");
     map_delete(map);
     done_testing();
