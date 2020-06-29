@@ -48,12 +48,14 @@ int map_layer_by_height(const struct map *map,
 void map_delete_layer(struct layer *layer);
 
 /**
- * Print a layer to stdout
+ * Print a layer to a stream
  *
+ * @param stream  The stream
  * @param layer   The layer
  * @param indent  The indentation when printing
  */
-void map_print_layer(const struct layer *layer,
+void map_print_layer(FILE *stream,
+                     const struct layer *layer,
                      const char *prefix);
 
 // Functions //
@@ -145,28 +147,29 @@ bool map_is_location_top_free(const struct map *map,
            map_get_tile_by_location(map, x, y, z + 1) <= 0;
 }
 
-void map_print_layer(const struct layer *layer,
+void map_print_layer(FILE *stream,
+                     const struct layer *layer,
                      const char *prefix) {
-    printf("A layer of %d row%s and %d column%s",
-           layer->num_rows, layer->num_rows <= 1 ? "" : "s",
-           layer->num_columns, layer->num_columns <= 1 ? "" : "s");
-    printf(" (offset = (%d,%d,%d))\n",
-           layer->offset.dx, layer->offset.dy, layer->offset.dz);
+    fprintf(stream, "A layer of %d row%s and %d column%s",
+            layer->num_rows, layer->num_rows <= 1 ? "" : "s",
+            layer->num_columns, layer->num_columns <= 1 ? "" : "s");
+    fprintf(stream, " (offset = (%d,%d,%d))\n",
+            layer->offset.dx, layer->offset.dy, layer->offset.dz);
     for (unsigned int i = 0; i < layer->num_rows; ++i) {
-        printf("%s    ", prefix);
+        fprintf(stream, "%s    ", prefix);
         for (unsigned int j = 0; j < layer->num_columns; ++j) {
-            printf("%d ", layer->tiles[i][j]);
+            fprintf(stream, "%d ", layer->tiles[i][j]);
         }
-        printf("\n");
+        fprintf(stream, "\n");
     }
 }
 
-void map_print(const struct map *map, const char *prefix) {
-    printf("%sA map of %d layer%s\n", prefix, map->num_layers,
+void map_print(FILE *stream, const struct map *map, const char *prefix) {
+    fprintf(stream, "%sA map of %d layer%s\n", prefix, map->num_layers,
             map->num_layers <= 1 ? "" : "s");
     for (unsigned int i = 0; i < map->num_layers; ++i) {
-        printf("%s  Layer %d: ", prefix, i);
-        map_print_layer(&map->layers[i], prefix);
+        fprintf(stream, "%s  Layer %d: ", prefix, i);
+        map_print_layer(stream, &map->layers[i], prefix);
     }
 }
 

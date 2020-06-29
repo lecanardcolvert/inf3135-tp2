@@ -90,12 +90,13 @@ struct map *map_create(void);
 void map_delete(struct map *map);
 
 /**
- * Print a map to stdout
+ * Print a map to a stream
  *
+ * @param stream  The stream
  * @param map     The map
  * @param prefix  The prefix to print for each line
  */
-void map_print(const struct map *map, const char *prefix);
+void map_print(FILE *stream, const struct map *map, const char *prefix);
 
 /**
  * Add a layer to a map
