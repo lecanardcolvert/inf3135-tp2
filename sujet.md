@@ -4,7 +4,7 @@ title: "Travail pratique 2: Générer des cartes isométriques"
 
 Dans ce deuxième travail pratique, vous devez apporter des modifications à un
 programme qui permet de générer des [cartes
-isométriques](https://fr.wikipedia.org/wiki/Perspective_isom%C3%A9trique),
+isométriques](https://fr.wikipedia.org/wiki/Perspective_isom%C3%A9trique).
 
 Le travail doit être réalisé **seul**. Il doit être remis au plus tard le **26
 juillet 2020** à **23h59**.  À partir de minuit, une pénalité de **2% par
@@ -55,6 +55,8 @@ Vos modifications devront être sauvegardées sur une branche nommée
 
 ### Tâche 2: Générer un fichier DOT du graphe de la carte (`dot-output`)
 
+À compléter.
+
 ### Tâche 3: Valider la lecture d'une carte au format JSON (`validate-json`)
 
 Lorsque le programme charge une carte isométrique depuis un fichier JSON,
@@ -68,6 +70,8 @@ indéterminés. Dans cette tâche, vous devez améliorer la robustesse de votre
 programme et, en cas d'erreur, afficher des messages d'erreur 
 
 ### Tâche 4: Tracer un chemin entre le départ et l'arrivée (`draw-walk`)
+
+À compléter.
 
 ### Dépendance/indépendance entre les tâches
 
@@ -212,14 +216,9 @@ La pondération pour chacune des tâches est distribuée comme suit:
 
 | Tâche                     | Documentation | Requête   |   Code    | Fonctionnalité |  Total    |
 | ------------------------- | ------------- | --------- | --------- | -------------- | --------- |
-| Tâche 1: `memory-leak`    |      0        |    10     |     2     |       8        |    20     |
+| Tâche 1: `memory-leak`    |      0        |     8     |     2     |      10        |    20     |
 | Tâche 2: `dot-output`     |      2        |     8     |     2     |       8        |    20     |
 | Tâche 3: `validate-json`  |      5        |    10     |     5     |      10        |    30     |
 | Tâche 4: `draw-walk`      |      5        |    10     |     5     |      10        |    30     |
-| **Total**                 |               |           |           |                | **100**   |
-
-Notez que, dans chaque cas, **au moins** la moitié des points attribués
-concerneront la qualité de la contribution (requête d'intégration bien rédigée,
-messages de *commit* pertinents, atomiques et bien formatés, respect du style,
-etc.). Il est donc important non seulement d'apporter une modification
-fonctionnelle du code, mais aussi de la faire proprement.
+| ------------------------- | ------------- | --------- | --------- | -------------- | --------- |
+| **Total**                 |     12        |    36     |    14     |      38        | **100**   |
