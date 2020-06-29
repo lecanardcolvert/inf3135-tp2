@@ -46,12 +46,14 @@ struct tileset *tile_create_tileset(void);
 void tile_delete_tileset(struct tileset *tileset);
 
 /**
- * Print a tileset to stdout
+ * Print a tileset to a stream
  *
+ * @param stream   The stream
  * @param tileset  The tileset to print
  * @param prefix   The prefix to print for each line
  */
-void tile_print_tileset(const struct tileset *tileset,
+void tile_print_tileset(FILE *stream,
+                        const struct tileset *tileset,
                         const char *prefix);
 
 /**

@@ -5,19 +5,21 @@
 // -------------- //
 
 /**
- * Print a tile to stdout
+ * Print a tile to a stream
  *
+ * @param stream  The stream
  * @param tile    The tile to print
  * @param prefix  The prefix to print for each line
  */
-void tile_print(const struct tile *tile,
+void tile_print(FILE *stream,
+                const struct tile *tile,
                 const char *prefix) {
-    printf("%s   Tile id=%d with directions ", prefix, tile->id);
+    fprintf(stream, "%s   Tile id=%d with directions ", prefix, tile->id);
     for (unsigned int d = 0; d < tile->num_directions; ++d) {
-        if (d > 0) printf(",");
-        geometry_print_vect(tile->directions + d);
+        if (d > 0) fprintf(stream, ",");
+        geometry_print_vect(stream, tile->directions + d);
     }
-    printf("\n");
+    fprintf(stream, "\n");
 }
 
 // Implementation //
@@ -36,14 +38,15 @@ void tile_delete_tileset(struct tileset *tileset) {
     free(tileset);
 }
 
-void tile_print_tileset(const struct tileset *tileset,
+void tile_print_tileset(FILE *stream,
+                        const struct tileset *tileset,
                         const char *prefix) {
-    printf("%s Tileset of %d tile%s%s\n",
-           prefix, tileset->num_tiles,
-           tileset->num_tiles <= 1 ? "" : "s",
-           tileset->num_tiles >= 1 ? ":" : "");
+    fprintf(stream, "%sTileset of %d tile%s%s\n",
+            prefix, tileset->num_tiles,
+            tileset->num_tiles <= 1 ? "" : "s",
+            tileset->num_tiles >= 1 ? ":" : "");
     for (unsigned int i = 0; i < tileset->num_tiles; ++i) {
-        tile_print(tileset->tiles + i, prefix);
+        tile_print(stream, tileset->tiles + i, prefix);
     }
 }
 
