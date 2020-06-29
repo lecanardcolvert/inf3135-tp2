@@ -1,41 +1,42 @@
 {
     "tile-width": 256,
+    "z-offset": 78,
     "tileset":
         [
             {
                 "id": 1,
-                "filename": "art/end-small.png",
+                "filename": "../art/end-256x256.png",
                 "directions": [[1,0,-1], [-1,0,-1], [0,1,-1], [0,-1,-1]]
             },
             {
                 "id": 2,
-                "filename": "art/flat-small.png",
+                "filename": "../art/flat-256x256.png",
                 "directions": [[1,0,0], [-1,0,0], [0,1,0], [0,-1,0],
                                [1,0,1], [-1,0,1], [0,1,1], [0,-1,1]]
             },
             {
                 "id": 3,
-                "filename": "art/ne-small.png",
+                "filename": "../art/ne-256x256.png",
                 "directions": [[1,0,-1], [-1,0,0]]
             },
             {
                 "id": 4,
-                "filename": "art/nw-small.png",
+                "filename": "../art/nw-256x256.png",
                 "directions": [[0,1,-1], [0,-1,0]]
             },
             {
                 "id": 5,
-                "filename": "art/se-small.png",
+                "filename": "../art/se-256x256.png",
                 "directions": [[0,-1,-1], [0,1,0]]
             },
             {
                 "id": 6,
-                "filename": "art/start-small.png",
+                "filename": "../art/start-256x256.png",
                 "directions": [[1,0,-1], [-1,0,-1], [0,1,-1], [0,-1,-1]]
             },
             {
                 "id": 7,
-                "filename": "art/sw-small.png",
+                "filename": "../art/sw-256x256.png",
                 "directions": [[-1,0,-1], [1,0,0]]
             }
         ],
