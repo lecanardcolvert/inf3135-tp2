@@ -13,7 +13,7 @@ int main () {
     tile_add_to_tileset(tileset, 2, NULL);
     tile_add_direction(tileset, 2,  0,  0, 1);
     diag("Printing the tileset");
-    tile_print_tileset(tileset, "#");
+    tile_print_tileset(stdout, tileset, "#");
     ok(tileset->num_tiles == 2, "tileset contains 2 tiles");
     ok(tileset->tiles[0].num_directions == 4,
        "tile at index 0 has 4 allowed directions");

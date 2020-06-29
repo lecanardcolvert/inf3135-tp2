@@ -19,7 +19,7 @@ int main () {
     map_set_tile_by_location(map, 3, 4, 1, 2);
     map_set_tile_by_location(map, 7, 3, 3, 3);
     diag("Printing the map's content");
-    map_print(map, "# ");
+    map_print(stdout, map, "# ");
     ok(map_get_tile_by_location(map, 2, 2, 0) == 1,
        "tile at location (2,2,0) is 1");
     ok(map_get_tile_by_location(map, 3, 4, 1) == 2,
@@ -39,7 +39,7 @@ int main () {
     for (const struct location *location = map_get_occupied_location(map, true);
          location != NULL;
          location = map_get_occupied_location(map, false)) {
-        geometry_print_location(location);
+        geometry_print_location(stdout, location);
         printf(" ");
         ++n;
     }
