@@ -66,6 +66,7 @@ struct tile *tile_add_to_tileset(struct tileset *tileset,
     }
     tileset->tiles[i].id = id;
     tileset->tiles[i].filename = filename;
+    tileset->tiles[i].surface = NULL;
     tileset->tiles[i].directions = malloc(sizeof(struct vect));
     tileset->tiles[i].num_directions = 0;
     tileset->tiles[i].capacity = 1;
@@ -89,4 +90,16 @@ void tile_add_direction(struct tileset *tileset, tile_id id,
         tile->directions[tile->num_directions] = (struct vect){dx, dy, dz};
         ++tile->num_directions;
     }
+}
+
+struct tile *tile_by_id(const struct tileset *tileset,
+                        tile_id id) {
+    unsigned int i;
+    for (i = 0;
+         i < tileset->num_tiles && tileset->tiles[i].id < id;
+         ++i);
+    if (i < tileset->num_tiles && tileset->tiles[i].id == id)
+        return tileset->tiles + i;
+    else
+        return NULL;
 }

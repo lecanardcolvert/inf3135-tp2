@@ -2,6 +2,7 @@
 #define TILE_H
 
 #include "map.h"
+#include <cairo.h>
 
 // Types //
 // ----- //
@@ -12,6 +13,7 @@
 struct tile {
     tile_id id;                  // The tile id
     const char *filename;        // The filename of the image for the tile
+    cairo_surface_t *surface;    // The cairo surface
     struct vect *directions;     // The allowed directions
     unsigned int num_directions; // The number of allowed directions
     unsigned int capacity;       // The directions capacity
@@ -77,5 +79,17 @@ struct tile *tile_add_to_tileset(struct tileset *tileset,
  */
 void tile_add_direction(struct tileset *tileset, tile_id id,
                         int dx, int dy, int dz);
+
+/**
+ * Return the tile by its id in a tileset
+ *
+ * If the id does not exist, return NULL.
+ *
+ * @param tileset  The tileset
+ * @param id       The id of the tile
+ * @return         The associated tile or NULL
+ */
+struct tile *tile_by_id(const struct tileset *tileset,
+                        tile_id id);
 
 #endif
