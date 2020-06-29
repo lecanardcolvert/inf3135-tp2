@@ -1,6 +1,7 @@
 #ifndef GEOMETRY_H
 #define GEOMETRY_H
 
+#include <stdio.h>
 #include <stdbool.h>
 
 /**
@@ -45,25 +46,28 @@ struct box {
 struct vect geometry_box_to_vect(const struct box *b);
 
 /**
- * Print a location to stdout
+ * Print a location to a stream
  *
- * @param v  The location to print
+ * @param stream  The stream
+ * @param v       The location to print
  */
-void geometry_print_location(const struct location *l);
+void geometry_print_location(FILE *stream, const struct location *l);
 
 /**
- * Print a vector to stdout
+ * Print a vector to a stream
  *
+ * @param stream  The stream
  * @param v  The vector to print
  */
-void geometry_print_vect(const struct vect *v);
+void geometry_print_vect(FILE *stream, const struct vect *v);
 
 /**
- * Print a box to stdout
+ * Print a box to a stream
  *
+ * @param stream  The stream
  * @param b  The box
  */
-void geometry_print_box(const struct box *b);
+void geometry_print_box(FILE *stream, const struct box *b);
 
 /**
  * Indicate if two vectors are equal
