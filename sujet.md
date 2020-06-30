@@ -15,14 +15,13 @@ heure** de retard sera appliquée.
 Les principaux objectifs visés sont les suivants :
 
 * Se **familiariser** avec un logiciel développé en C par quelqu'un d'autre
-* Apporter des **modifications** à ce logiciel, en utilisant notamment des
-  **requêtes d'intégration** (*merge requests*)
 * Apprendre à utiliser des **bibliothèques tierces** à l'intérieur d'un
   programme C, en consultant la documentation disponible
+* Organiser le développement des modifications à l'aide de **branches**
+* Soumettre les **modifications** en utilisant des **requêtes d'intégration**
+  (*merge requests*)
 * **Documenter** convenablement des requêtes d'intégration à l'aide du format
   Markdown
-* Utiliser correctement un **logiciel de contrôle de version** pour apporter
-  les modifications en question
 * S'assurer que les modifications apportées sont adéquates en proposant ou en
   mettant à jour un **cadre de tests** qui montre que les modifications
   n'entraînent pas de régression
@@ -51,11 +50,34 @@ invoqué dans certaines situations. À l'aide de l'outil
 apportez les correctifs nécessaires.
 
 Vos modifications devront être sauvegardées sur une branche nommée
-`memory-leak`.
+`memory-leak`, basée sur le *commit* le plus récent de la branche `master`.
 
 ### Tâche 2: Générer un fichier DOT du graphe de la carte (`dot-output`)
 
-À compléter.
+Les formats actuellement supportés par le programme sont `text` et `png`. Votre
+deuxième tâche consistera à ajouter un troisième format possible appelé `dot`
+qui affichera la carte au format DOT de [Graphviz](https://graphviz.org/), de
+telle sorte que la commande
+
+```sh
+$ bin/isomap -f dot < data/map3x3.json | neato -Tpng -o map3x3.png
+```
+
+produise l'image d'un graphe représentant les mouvements possibles entre les
+différentes tuiles de la carte isométrique décrite dans `map3x3.json`.
+
+Vos modifications devront être regroupées sur une branche nommée `dot-output`,
+également basée sur le *commit* le plus récent de la branche `master`.
+N'oubliez pas d'intervenir aux endroits pertinents pour tenir compte de la
+nouvelle option:
+
+* **Code source C**: pour implémenter la nouvelle fonctionnalité.
+* **Manuel d'utilisation**: pour afficher la nouvelle fonctionnalité quand on
+  entre `bin/isomap -h`
+* **Fichier `README.md`**: donnez un exemple d'utilisation de cette option
+  (commande à invoquer et image résultante)
+* **Tests unitaires**: ajoutez quelques tests montrant que l'option est
+  maintenant disponible.
 
 ### Tâche 3: Valider la lecture d'une carte au format JSON (`validate-json`)
 
@@ -66,20 +88,28 @@ images dessinées existent bien.
 
 Ce comportement rend difficile le débogage lorsque les données sont corrompues,
 car il peut soulever des erreurs de segmentation ou des comportements
-indéterminés. Dans cette tâche, vous devez améliorer la robustesse de votre
-programme et, en cas d'erreur, afficher des messages d'erreur 
+indéterminés.
+
+Dans cette tâche, vous devez améliorer la robustesse de votre programme et, en
+cas d'erreur, afficher des messages d'erreur plus faciles à interpréter pour le
+développeur ou la développeuse. Vous devrez également ajouter des tests
+unitaires permettant de montrer que vos modifications détectent différents
+scénarios erronés. Vous devrez probablement ajouter des exemples de fichiers
+JSON invalides dans le répertoire `data`.
+
+Vos modifications devront être regroupées sur une branche nommée
+`validate-json`, basée sur le *commit* le plus récent de la branche `master`.
 
 ### Tâche 4: Tracer un chemin entre le départ et l'arrivée (`draw-walk`)
 
-À compléter.
+À venir.
 
 ### Dépendance/indépendance entre les tâches
 
 Il est important de bien diviser les branches et les *commits* selon les tâches
-auxquelles ils se rapportent. En particulier, vous devez faire attention de les
-diviser selon qu'elles sont dépendantes ou indépendantes. Par conséquent, il
-est important de bien structurer la « topologie » de vos contributions pour
-qu'elle reflète les dépendances ou l'indépendance des branches.
+auxquelles ils se rapportent. Assurez-vous que la « topologie » de vos
+contributions reflète clairement les dépendances ou l'indépendance des
+branches.
 
 ## Soumettre une contribution
 
@@ -90,14 +120,14 @@ GitLab. Plus précisément, vous devrez utiliser une *requête d'intégration* (
 anglais, *merge request*, aussi parfois appelée *pull request*). Pour cela,
 vous devrez créer une branche pour chacune des tâches demandées. Afin de
 simplifier la correction, il est important de respecter **exactement** la
-nomenclature des branches (`memory-leak`, `validate-json`, `dot-output`,
+nomenclature suggérée (`memory-leak`, `validate-json`, `dot-output`,
 `draw-walk`).
 
 Dans un premier temps, vous devez répliquer (en anglais *fork*) le programme de
 base disponible. Assurez-vous de bien faire une copie **privée** (sinon les
-autres étudiants pourront voir votre solution et vous serez alors responsable
-s'il y a plagiat). Ensuite, vous devrez donner accès à votre projet en mode
-*Maintainer* à l'utilisateur `blondin_al`.
+autres étudiantes et étudiants du groupe pourront voir votre solution et vous
+serez alors responsable s'il y a plagiat). Ensuite, vous devrez donner accès
+à votre projet en mode *Maintainer* à l'utilisateur `blondin_al`.
 
 Supposons que vous avez complété la branche `memory-leak` sur votre dépôt local
 et que vous souhaitez la partager. Alors il vous suffit de pousser la branche
@@ -106,6 +136,11 @@ la branche `memory-leak` à la branche `master` (toujours dans votre dépôt). I
 est recommandé de vous inspirer de la
 [task0](https://gitlab.com/ablondin/inf3135-aut2017-tp2/merge_requests/1) pour
 un exemple de requête bien rédigée.
+
+Notez qu'il est possible en tout de temps de mettre à jour le titre et la
+description d'une requête d'intégration. Il est aussi possible de mettre à jour
+la branche correspondante. Ainsi, n'hésitez pas à faire des essais et à adapter
+le tout au fur et à mesure que vous avancez dans votre projet.
 
 **Attention!** Dans votre travail, il est important de **ne pas** fusionner de
 branche lors de la remise de votre travail, car vous devez attendre que vos

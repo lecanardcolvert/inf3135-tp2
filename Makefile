@@ -19,3 +19,4 @@ bindir:
 
 html:
 	pandoc README.md -o README.html
+	pandoc sujet.md -o sujet.html
