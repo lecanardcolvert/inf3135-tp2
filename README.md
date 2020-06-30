@@ -153,8 +153,8 @@ JSON. Les spécifications sont les suivantes:
 - La clé `z-offset` doit indiquer le décalage vertical (en pixels) entre deux
   couches (*layers*).
 - La clé `tileset` doit contenir une liste d'objets JSON qui contiennent des
-  informations sur les tuiles.
-- Une tuile est identifiée par les éléments suivants :
+  informations sur les tuiles. Une tuile est identifiée par les éléments
+  suivants:
 
   * Une valeur `id` numérique unique
   * Un nom de fichier `filename` qui indique où se trouve l'image correspondant
@@ -166,8 +166,8 @@ JSON. Les spécifications sont les suivantes:
     (`dy`) et entre les couches (`dz`).
 
 - La clé `layers`, qui donne une liste d'objet JSON qui contiennent des
-  informations sur chaque couche.
-- Une couche (en anglais, _layer_) est identifiée par les données suivantes:
+  informations sur chaque couche. Une couche (en anglais, _layer_) est
+  identifiée par les données suivantes:
 
   * Une clé `num-rows` qui indique le nombre de lignes de la couche.
   * Une clé `num-cols` qui indique le nombre de colonnes de la couche.
