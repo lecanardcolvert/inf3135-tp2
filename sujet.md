@@ -102,7 +102,22 @@ Vos modifications devront être regroupées sur une branche nommée
 
 ### Tâche 4: Tracer un chemin entre le départ et l'arrivée (`draw-walk`)
 
-À venir.
+Actuellement, l'option `-w` est seulement supportée pour le format `text` et
+elle est simplement ignorée pour le format `png`.
+
+Dans cette tâche, vous devez activer le tracé d'une marche (*walk*) ou chemin
+orienté (*directed path*) pour les formats `png` et `dot`. Vous êtes libres
+d'utiliser n'importe quel mécanisme visuel pour identifier le chemin. Par
+exemple, vous pourriez:
+
+* Pour l'option `dot`: colorier les sommets et les flèches qui font partie de
+  la marche dans le graphe généré par Graphviz
+* Pour l'option `png`: colorier en plus clair les tuiles qui font partie de la
+  marche dans l'image générée par Cairo
+
+Vos modifications devront être regroupées sur une branche nommée `draw-walk`,
+basée sur le *commit* le plus récent de la branche `dot-output`, puisqu'elle
+dépend des modifications apportées dans la tâche 2.
 
 ### Dépendance/indépendance entre les tâches
 
@@ -251,8 +266,8 @@ La pondération pour chacune des tâches est distribuée comme suit:
 
 | Tâche                     | Documentation | Requête   |   Code    | Fonctionnalité |  Total    |
 | ------------------------- | ------------- | --------- | --------- | -------------- | --------- |
-| Tâche 1: `memory-leak`    |      0        |     8     |     2     |      10        |    20     |
-| Tâche 2: `dot-output`     |      2        |     8     |     2     |       8        |    20     |
+| Tâche 1: `memory-leak`    |      0        |     8     |     4     |       8        |    20     |
+| Tâche 2: `dot-output`     |      4        |     8     |     5     |       8        |    25     |
 | Tâche 3: `validate-json`  |      5        |    10     |     5     |      10        |    30     |
-| Tâche 4: `draw-walk`      |      5        |    10     |     5     |      10        |    30     |
-| **Total**                 |   **12**      |  **36**   |  **14**   |    **38**      | **100**   |
+| Tâche 4: `draw-walk`      |      4        |     8     |     5     |       8        |    25     |
+| **Total**                 |   **13**      |  **34**   |  **19**   |    **34**      | **100**   |
