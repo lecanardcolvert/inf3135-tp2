@@ -6,6 +6,8 @@
  * @author Alexandre Blondin Masse
  */
 #include "isomap.h"
+#include "geometry.h"
+#include "graph.h"
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -59,12 +61,8 @@ enum status {
 struct arguments {
     bool show_help;                        // Show help?
     bool with_walk;                        // Display walk?
-    int start_x;                           // The start location x-coordinate
-    int start_y;                           // The start location y-coordinate
-    int start_z;                           // The start location z-coordinate
-    int end_x;                             // The end location x-coordinate
-    int end_y;                             // The end location y-coordinate
-    int end_z;                             // The end location z-coordinate
+    struct location start;                 // The start location
+    struct location end;                   // The end location
     char output_format[FORMAT_LENGTH];     // The output format
     char input_filename[FILENAME_LENGTH];  // The input filename
     char output_filename[FILENAME_LENGTH]; // The output filename
@@ -110,12 +108,12 @@ struct arguments parse_arguments(int argc, char *argv[]) {
     struct arguments arguments = {
         .show_help       = false,
         .with_walk       = false,
-        .start_x         = 0,
-        .start_y         = 0,
-        .start_z         = 0,
-        .end_x           = 1,
-        .end_y           = 1,
-        .end_z           = 0,
+        .start.x         = 0,
+        .start.y         = 0,
+        .start.z         = 0,
+        .end.x           = 1,
+        .end.y           = 1,
+        .end.z           = 0,
         .output_format   = "text",
         .input_filename  = "",
         .output_filename = "",
@@ -142,12 +140,12 @@ struct arguments parse_arguments(int argc, char *argv[]) {
             case 'h': arguments.show_help = true; break;
             case 'w': arguments.with_walk = true; break;
             case 's': arguments.status = arguments.status != ISOMAP_OK ? arguments.status :
-                                         parse_coordinates(optarg, &arguments.start_x,
-                                                           &arguments.start_y, &arguments.start_z);
+                                         parse_coordinates(optarg, &arguments.start.x,
+                                                           &arguments.start.y, &arguments.start.z);
                       break;
             case 'e': arguments.status = arguments.status != ISOMAP_OK ? arguments.status :
-                                         parse_coordinates(optarg, &arguments.end_x,
-                                                           &arguments.end_y, &arguments.end_z);
+                                         parse_coordinates(optarg, &arguments.end.x,
+                                                           &arguments.end.y, &arguments.end.z);
                       break;
             case 'f': strncpy(arguments.output_format, optarg, FORMAT_LENGTH - 1);
                       break;
@@ -185,6 +183,23 @@ struct arguments parse_arguments(int argc, char *argv[]) {
     return arguments;
 }
 
+void print_walk(const struct isomap *isomap,
+                const struct arguments *arguments) {
+    struct graph *graph = graph_create(isomap->map, isomap->tileset);
+    struct graph_walk *walk = graph_shortest_walk(graph,
+            &arguments->start,
+            &arguments->end);
+    if (walk != NULL) {
+        printf("A ");
+        graph_print_walk(stdout, walk, "");
+    } else {
+        printf("No walk between ");
+        geometry_print_location(stdout, &arguments->start);
+        printf(" and ");
+        geometry_print_location(stdout, &arguments->end);
+    }
+}
+
 int main(int argc, char *argv[]) {
     struct arguments arguments = parse_arguments(argc, argv);
     if (arguments.status == ISOMAP_OK) {
@@ -199,8 +214,8 @@ int main(int argc, char *argv[]) {
             output = fopen(arguments.output_filename, "w");
         if (strcmp(arguments.output_format, "text") == 0) {
             isomap_print(output, isomap, "");
-            if (output != stdout)
-                fclose(output);
+            if (arguments.with_walk) print_walk(isomap, &arguments);
+            if (output != stdout) fclose(output);
         } else if (strcmp(arguments.output_format, "png") == 0) {
             isomap_draw_to_png(isomap, arguments.output_filename);
         }
