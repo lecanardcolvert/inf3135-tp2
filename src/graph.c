@@ -207,6 +207,8 @@ struct graph_walk *graph_shortest_walk(const struct graph *graph,
         distance[i] = -1;
     }
     struct graph_node *start_node = graph_get_node(graph, start);
+    struct graph_node *end_node = graph_get_node(graph, end);
+    if (start_node == NULL || end_node == NULL) return NULL;
     queue q;
     queue_initialize(&q);
     queue_push(&q, start_node);
@@ -225,7 +227,7 @@ struct graph_walk *graph_shortest_walk(const struct graph *graph,
         }
     }
     struct graph_walk *walk =
-        graph_retrieve_walk(predecessors, start_node, graph_get_node(graph, end));
+        graph_retrieve_walk(predecessors, start_node, end_node);
     return walk;
 }
 
