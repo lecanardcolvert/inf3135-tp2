@@ -108,17 +108,17 @@ struct arguments parse_arguments(int argc, char *argv[]) {
     struct arguments arguments = {
         .show_help       = false,
         .with_walk       = false,
-        .start.x         = 0,
-        .start.y         = 0,
-        .start.z         = 0,
-        .end.x           = 1,
-        .end.y           = 1,
-        .end.z           = 0,
         .output_format   = "text",
         .input_filename  = "",
         .output_filename = "",
         .status          = ISOMAP_OK
     };
+    arguments.start.x = 0;
+    arguments.start.y = 0;
+    arguments.start.z = 0;
+    arguments.end.x   = 1;
+    arguments.end.y   = 1;
+    arguments.end.z   = 0;
     struct option long_opts[] = {
         // Set flag
         {"help",            no_argument,       0, 'h'},

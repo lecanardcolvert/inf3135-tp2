@@ -13,7 +13,7 @@ before_script:
     - build_root=$(pwd)
     - cd /tmp && git clone https://github.com/zorgnax/libtap.git && cd libtap && make && make install
     - cd "$build_root"
-    - ldconfig -v
+    - ldconfig
 
 build:
     stage: build

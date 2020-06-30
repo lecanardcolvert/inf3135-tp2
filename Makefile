@@ -4,10 +4,9 @@ exec = isomap
 
 all: bindir
 	$(MAKE) -C src/
-	$(MAKE) -C tests/
 	cp src/$(exec) bin
 
-test:
+test: all
 	$(MAKE) test -C tests/
 
 clean:
