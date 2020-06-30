@@ -6,7 +6,7 @@ src_obj_files = $(filter-out ../src/main.o, $(wildcard ../$(src_dir)/*.o))
 CFLAGS = -std=c11 -Wall -Wextra $(shell pkg-config --cflags tap cairo)
 LFLAGS = $(shell pkg-config --libs tap cairo) -ljansson
 
-.PHONY: all clean source test
+.PHONY: all clean source test test-internal test-bats
 
 all: source $(tests_exec_files)
 
@@ -23,9 +23,14 @@ clean:
 	rm -f *.o
 	rm -f $(tests_exec_files)
 
-test: all
+test: all test-internal test-bats
+
+test-internal:
 	./test_queue
 	./test_map
 	./test_tile
 	./test_isomap
 	./test_graph
+
+test-bats:
+	bats isomap.bats
