@@ -104,9 +104,7 @@ make
 
 qui va notamment produire un exécutable `bin/isomap`. Vous pouvez ensuite
 invoquer l'exécutable depuis la racine du projet. Par exemple, pour afficher
-l'aide, il suffit d'entrer:
-
-Les différentes options peuvent facilement être consultées en entrant
+l'aide, il suffit d'activer l'option `-h` ou `--help`:
 
 ```sh
 $ bin/isomap -h
@@ -140,7 +138,40 @@ Optional arguments:
 
 Alexandre Blondin Massé
 
-## Format des cartes
+## Repère dans le plan et dans l'espace
+
+Comme on dessine des cartes sur des images, on doit nécessairement appliquer
+une projection d'un espace 3D (la carte) vers un espace 2D (l'image). Dans le
+cas présent, nous nous basons sur les repères suivants pour les coordonnées
+d'écran et les coordonnées isométriques:
+
+![](images/frame.png)
+
+Autrement dit, nous avons les interprétations suivantes pour les coordonnées
+d'écran:
+
+* Un déplacement vers la *droite* (resp. *gauche*) correspond à un déplacement
+  positif (resp. négatif) en la direction donnée par $`x`$
+* Un déplacement vers le *bas* (resp. *haut*) correspond à un déplacement
+  positif (resp. négatif) en la direction donnée par $`y`$
+
+Et pour les coordonnées isométriques:
+
+* Un déplacement vers la *prochaine ligne* (resp. *ligne précédente*)
+  correspond à un déplacement positif (resp. négatif) en la direction donnée
+  par $`x`$
+* Un déplacement vers la *prochaine colonne* (resp. *colonne précédente*)
+  correspond à un déplacement positif (resp. négatif) en la direction donnée
+  par $`y`$
+* Un déplacement vers la *couche supérieure* (resp. *couche inférieure*)
+  correspond à un déplacement positif (resp. négatif) en la direction donnée
+  par $`z`$
+
+Ce choix facilite l'affichage des tuiles des couches inférieures vers les
+couches supérieures, et des tuiles situées en arrière vers les tuiles situées
+en avant pour une même couche.
+
+## Format JSON
 
 Tel que mentionné plus haut, les cartes sont représentées à l'aide du format
 JSON. Les spécifications sont les suivantes:

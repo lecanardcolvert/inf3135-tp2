@@ -1,0 +1,17 @@
+\begin{tikzpicture}[scale=2, fleche/.style={->, line width=1mm}, var/.style={text=blue}, anchor=base]
+  % Repère écran
+  \begin{scope}
+    \draw[fleche] (0,0) -- node[var, pos=1.0, above right] {$x$} ++ (1,0);
+    \draw[fleche] (0,0) -- node[var, pos=1.0, below left]  {$y$} ++ (0,-1);
+    \fill (0,0) circle (1mm);
+    \node at (0.5, 0.75) {Repère d'écran};
+  \end{scope}
+  % Repère isométrique
+  \begin{scope}[xshift=4cm, yshift=-2.5mm]
+    \draw[fleche] (0,-0.5) -- node[var, pos=1.0, left]  {$x$} ++ (-1,-0.5);
+    \draw[fleche] (0,-0.5) -- node[var, pos=1.0, right] {$y$} ++ ( 1,-0.5);
+    \draw[fleche] (0,-0.5) -- node[var, pos=1.0, above] {$z$} ++ ( 0,   1);
+    \fill (0,-0.5) circle (1mm);
+    \node at (0, 1) {Repère isométrique};
+  \end{scope}
+\end{tikzpicture}
