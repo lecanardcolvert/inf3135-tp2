@@ -52,7 +52,7 @@ enum status {
     ISOMAP_ERROR_COORDINATES                 = 2,
     ISOMAP_ERROR_PNG_FORMAT_WITHOUT_FILENAME = 3,
     ISOMAP_ERROR_BAD_OPTION                  = 4,
-    ISOMAP_ERROR_INPUT_FILENAME_MANDATORY    = 5,
+    ISOMAP_ERROR_INVALID_PATH                = 5,
 };
 
 /**
@@ -158,7 +158,7 @@ struct arguments parse_arguments(int argc, char *argv[]) {
         }
     }
 
-    if (optind < argc) {
+    if (arguments.status == ISOMAP_ERROR_BAD_OPTION || optind < argc) {
         fprintf(stderr, "Error: option not recognized\n");
         print_usage(argv, stderr);
         exit(ISOMAP_ERROR_BAD_OPTION);
@@ -166,7 +166,7 @@ struct arguments parse_arguments(int argc, char *argv[]) {
         print_usage(argv, stdout);
         exit(ISOMAP_OK);
     } else if (arguments.status == ISOMAP_ERROR_COORDINATES) {
-        fprintf(stderr, "Error: the coordinates must be integers separated by commas\n");
+        fprintf(stderr, "Error: the coordinates must be 3 integers separated by commas\n");
         print_usage(argv, stderr);
         exit(ISOMAP_ERROR_COORDINATES);
     } else if (strcmp(arguments.output_format, "text") != 0 &&
@@ -204,14 +204,24 @@ int main(int argc, char *argv[]) {
     struct arguments arguments = parse_arguments(argc, argv);
     if (arguments.status == ISOMAP_OK) {
         FILE *input = stdin;
-        if (strcmp(arguments.input_filename, "") != 0)
+        if (strcmp(arguments.input_filename, "") != 0) {
             input = fopen(arguments.input_filename, "r");
+            if (input == NULL) {
+                fprintf(stderr, "Error: invalid file path\n");
+                exit(ISOMAP_ERROR_INVALID_PATH);
+            }
+        }
         struct isomap *isomap = isomap_create_from_json_file(input);
         if (input != stdin)
             fclose(input);
         FILE *output = stdout;
-        if (strcmp(arguments.output_filename, "") != 0)
+        if (strcmp(arguments.output_filename, "") != 0) {
             output = fopen(arguments.output_filename, "w");
+            if (output == NULL) {
+                fprintf(stderr, "Error: invalid file path\n");
+                exit(ISOMAP_ERROR_INVALID_PATH);
+            }
+        }
         if (strcmp(arguments.output_format, "text") == 0) {
             isomap_print(output, isomap, "");
             if (arguments.with_walk) print_walk(isomap, &arguments);
