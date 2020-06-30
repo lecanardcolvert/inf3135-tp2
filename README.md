@@ -237,8 +237,10 @@ Testé sur Ubuntu 18.04.
   externes. La commande `bats` doit être disponible pour lancer les tests avec
   `make test`.
 * [Libtap](https://github.com/zorgnax/libtap), une bibliothèque permettant de
-  mettre en place des tests unitaires internes. Cette bibliothèque doit être
-  installée pour que la commande `make test` fonctionne correctement.
+  mettre en place des tests unitaires internes. Il est probable que vous ayez
+  besoin de lancer la commande `ldconfig` après l'installation. Cette
+  bibliothèque doit être installée pour que la commande `make test` fonctionne
+  correctement.
 
 ## License
 
