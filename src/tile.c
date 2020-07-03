@@ -73,7 +73,6 @@ struct tile *tile_add_to_tileset(struct tileset *tileset,
     tileset->tiles[i].id = id;
     strncpy(tileset->tiles[i].filename, ROOT_DIR, PATH_LENGTH);
     strncat(tileset->tiles[i].filename, filename, PATH_LENGTH2);
-    tileset->tiles[i].surface = NULL;
     tileset->tiles[i].directions = malloc(sizeof(struct vect));
     tileset->tiles[i].num_directions = 0;
     tileset->tiles[i].capacity = 1;

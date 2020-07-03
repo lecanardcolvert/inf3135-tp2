@@ -15,7 +15,6 @@
 struct tile {
     tile_id id;                  // The tile id
     char filename[PATH_LENGTH];  // The filename of the image for the tile
-    cairo_surface_t *surface;    // The cairo surface
     struct vect *directions;     // The allowed directions
     unsigned int num_directions; // The number of allowed directions
     unsigned int capacity;       // The directions capacity

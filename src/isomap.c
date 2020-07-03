@@ -135,11 +135,10 @@ void isomap_draw_to_png(const struct isomap *isomap,
         tile_id id = map_get_tile_by_location(isomap->map, location->x,
                                               location->y, location->z);
         struct tile *tile = tile_by_id(isomap->tileset, id);
-        if (tile->surface == NULL) {
-            tile->surface = cairo_image_surface_create_from_png(tile->filename);
-        }
-        cairo_set_source_surface(cr, tile->surface, x, y);
+        cairo_surface_t *surface = cairo_image_surface_create_from_png(tile->filename);
+        cairo_set_source_surface(cr, surface, x, y);
         cairo_paint(cr);
+        cairo_surface_destroy(surface);
     }
     cairo_surface_write_to_png(output_image, output_filename);
     cairo_surface_destroy(output_image);
