@@ -4,6 +4,8 @@
 #include "map.h"
 #include <cairo.h>
 
+#define PATH_LENGTH 1000
+
 // Types //
 // ----- //
 
@@ -12,7 +14,7 @@
  */
 struct tile {
     tile_id id;                  // The tile id
-    char *filename;              // The filename of the image for the tile
+    char filename[PATH_LENGTH];  // The filename of the image for the tile
     cairo_surface_t *surface;    // The cairo surface
     struct vect *directions;     // The allowed directions
     unsigned int num_directions; // The number of allowed directions

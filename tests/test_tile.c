@@ -5,12 +5,12 @@
 int main () {
     diag("Creating an empty tileset");
     struct tileset *tileset = tile_create_tileset();
-    tile_add_to_tileset(tileset, 1, NULL);
+    tile_add_to_tileset(tileset, 1, "");
     tile_add_direction(tileset, 1,  1,  0, 0);
     tile_add_direction(tileset, 1, -1,  0, 0);
     tile_add_direction(tileset, 1,  0,  1, 0);
     tile_add_direction(tileset, 1,  0, -1, 0);
-    tile_add_to_tileset(tileset, 2, NULL);
+    tile_add_to_tileset(tileset, 2, "");
     tile_add_direction(tileset, 2,  0,  0, 1);
     diag("Printing the tileset");
     tile_print_tileset(stdout, tileset, "#");

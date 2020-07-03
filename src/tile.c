@@ -1,5 +1,8 @@
 #include "tile.h"
 #include <stdio.h>
+#include <string.h>
+
+#define PATH_LENGTH2 (PATH_LENGTH + 1 - sizeof(ROOT_DIR))
 
 // Implementation //
 // -------------- //
@@ -68,7 +71,8 @@ struct tile *tile_add_to_tileset(struct tileset *tileset,
         tileset->tiles[j] = tileset->tiles[j - 1];
     }
     tileset->tiles[i].id = id;
-    tileset->tiles[i].filename = filename;
+    strncpy(tileset->tiles[i].filename, ROOT_DIR, PATH_LENGTH);
+    strncat(tileset->tiles[i].filename, filename, PATH_LENGTH2);
     tileset->tiles[i].surface = NULL;
     tileset->tiles[i].directions = malloc(sizeof(struct vect));
     tileset->tiles[i].num_directions = 0;
