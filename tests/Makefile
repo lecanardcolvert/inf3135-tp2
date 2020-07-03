@@ -17,7 +17,7 @@ $(tests_exec_files): %: %.o
 	gcc $(CFLAGS) -c $<
 
 source:
-	$(MAKE) -C ../$(src_dir)
+	$(MAKE) -C ..
 
 clean:
 	rm -f *.o
