@@ -1,7 +1,6 @@
 #include "isomap.h"
 #include "map.h"
 #include "tile.h"
-#include "utils.h"
 #include <jansson.h>
 #include <cairo.h>
 
