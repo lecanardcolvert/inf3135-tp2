@@ -93,6 +93,7 @@ struct isomap *isomap_create_from_json_file(FILE *file) {
     isomap->map = map_create();
     isomap_load_tileset(isomap, json_tileset);
     isomap_load_map(isomap, json_layers);
+    json_decref(json_root);
     return isomap;
 }
 
