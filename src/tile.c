@@ -52,7 +52,7 @@ void tile_print_tileset(FILE *stream,
 
 struct tile *tile_add_to_tileset(struct tileset *tileset,
                                  tile_id id,
-                                 const char *filename) {
+                                 char *filename) {
     unsigned int i;
     for (i = 0;
          i < tileset->num_tiles && tileset->tiles[i].id < id;

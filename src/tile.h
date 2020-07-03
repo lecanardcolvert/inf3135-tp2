@@ -12,7 +12,7 @@
  */
 struct tile {
     tile_id id;                  // The tile id
-    const char *filename;        // The filename of the image for the tile
+    char *filename;              // The filename of the image for the tile
     cairo_surface_t *surface;    // The cairo surface
     struct vect *directions;     // The allowed directions
     unsigned int num_directions; // The number of allowed directions
@@ -66,7 +66,7 @@ void tile_print_tileset(FILE *stream,
  */
 struct tile *tile_add_to_tileset(struct tileset *tileset,
                                  tile_id id,
-                                 const char *filename);
+                                 char *filename);
 
 /**
  * Add an allowed direction to a tile in a tileset

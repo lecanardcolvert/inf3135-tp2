@@ -1,6 +1,7 @@
 #include "isomap.h"
 #include "map.h"
 #include "tile.h"
+#include "utils.h"
 #include <jansson.h>
 #include <cairo.h>
 
@@ -38,7 +39,8 @@ void isomap_load_tileset(struct isomap *isomap, const json_t *json_tileset) {
     for (unsigned int i = 0; i < json_array_size(json_tileset); ++i) {
         json_t *json_tile = json_array_get(json_tileset, i);
         tile_id id = json_integer_value(json_object_get(json_tile, "id"));
-        const char *filename = json_string_value(json_object_get(json_tile, "filename"));
+        json_t *json_filename = json_object_get(json_tile, "filename");
+        char *filename = utils_strdup(json_string_value(json_filename));
         tile_add_to_tileset(isomap->tileset, id, filename);
         isomap_load_directions(isomap, id, json_object_get(json_tile, "directions"));
     }
