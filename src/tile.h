@@ -67,7 +67,7 @@ void tile_print_tileset(FILE *stream,
  */
 struct tile *tile_add_to_tileset(struct tileset *tileset,
                                  tile_id id,
-                                 char *filename);
+                                 const char *filename);
 
 /**
  * Add an allowed direction to a tile in a tileset

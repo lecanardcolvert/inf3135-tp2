@@ -40,7 +40,7 @@ void isomap_load_tileset(struct isomap *isomap, const json_t *json_tileset) {
         json_t *json_tile = json_array_get(json_tileset, i);
         tile_id id = json_integer_value(json_object_get(json_tile, "id"));
         json_t *json_filename = json_object_get(json_tile, "filename");
-        char *filename = utils_strdup(json_string_value(json_filename));
+        const char *filename = json_string_value(json_filename);
         tile_add_to_tileset(isomap->tileset, id, filename);
         isomap_load_directions(isomap, id, json_object_get(json_tile, "directions"));
     }
