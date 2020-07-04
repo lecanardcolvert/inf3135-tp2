@@ -1,5 +1,5 @@
-ROOT_DIR = $(shell dirname "$(PWD)")
-CFLAGS = -DROOT_DIR="\"$(ROOT_DIR)/\"" -g -std=c11 -Wall -Wextra $(shell pkg-config --cflags cairo)
+root_dir := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST))))/..)
+CFLAGS = -DROOT_DIR="\"$(root_dir)/\"" -g -std=c11 -Wall -Wextra $(shell pkg-config --cflags cairo)
 LFLAGS = $(shell pkg-config --libs tap cairo) -ljansson
 c_files = $(wildcard *.c)
 obj_files = $(patsubst %.c,%.o,$(c_files))
