@@ -241,6 +241,10 @@ dans l'évaluation:
   particulier, elle respecte le format Markdown et l'exploite à son maximum.
 * Le comportement du programme avant modification est décrit
 * Le comportement du programme après modification est décrit
+* La branche de la requête est basée sur le *commit* le plus récent de la
+  branche `master`, ou d'une autre branche si elle en dépend
+* La branche ne contient que des *commits* pertinents
+* Les *commits* effectuent des modifications bien spécifiques
 * Les messages de *commits* sont significatifs et ont un format cohérent avec
   les messages rédigés par les autres développeurs
 * La requête ne contient pas d'erreurs d'orthographe
