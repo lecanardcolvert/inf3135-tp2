@@ -1,19 +1,8 @@
+image: blondinal/inf3135:2020.2
+
 stages:
     - build
     - test
-
-before_script:
-    - apt-get update -qq
-    - apt-get -y install libcairo2-dev
-    - apt-get -y install libjansson-dev
-    - git clone https://github.com/bats-core/bats-core.git /tmp/bats
-    - mkdir -p /tmp/local
-    - bash /tmp/bats/install.sh /tmp/local
-    - export PATH=$PATH:/tmp/local/bin
-    - build_root=$(pwd)
-    - cd /tmp && git clone https://github.com/zorgnax/libtap.git && cd libtap && make && make install
-    - cd "$build_root"
-    - ldconfig
 
 build:
     stage: build
