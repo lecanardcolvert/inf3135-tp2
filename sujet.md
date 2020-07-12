@@ -56,15 +56,29 @@ Vos modifications devront être sauvegardées sur une branche nommée
 
 Les formats actuellement supportés par le programme sont `text` et `png`. Votre
 deuxième tâche consistera à ajouter un troisième format possible appelé `dot`
-qui affichera la carte au format DOT de [Graphviz](https://graphviz.org/), de
-telle sorte que la commande
+qui affichera la carte au format DOT de [Graphviz](https://graphviz.org/).
+
+Par exemple, les commandes
 
 ```sh
-$ bin/isomap -f dot < data/map3x3.json | neato -Tpng -o map3x3.png
+$ bin/isomap -f dot < data/map3x3.json | neato -Tpng -o graph3x3.png
+$ bin/isomap -f dot < data/map3x3.json | neato -Tpng -o graph10x10.png
 ```
 
-produise l'image d'un graphe représentant les mouvements possibles entre les
-différentes tuiles de la carte isométrique décrite dans `map3x3.json`.
+devraient produire des fichiers `graph3x3.png` et `graph10x10.png` dont les
+images ressemblent aux suivantes.
+
+| `graph3x3.png`                                                | `graph10x10.png`                                                |
+| ------------------------------------------------------------- | --------------------------------------------------------------- |
+| <img src="images/graph3x3.png" alt="" style="height:300px;"/> | <img src="images/graph10x10.png" alt="" style="height:500px;"/> |
+
+Ces graphes représentent les déplacements possibles entre les différentes
+tuiles, ce qui permet d'avoir une représentation logique d'une carte,
+complémentaire à la représentation visuelle obtenue avec l'option `-f png`. Il
+n'est pas obligatoire de colorier les noeuds comme dans les exemples ci-haut
+(un schéma de couleur a été utilisé, de telle sorte que, plus une tuile est
+foncée, plus elle est sur une couche élevée), mais la relation d'adjacence
+entre les noeuds devrait être la même.
 
 Vos modifications devront être regroupées sur une branche nommée `dot-output`,
 également basée sur le *commit* le plus récent de la branche `master`.
