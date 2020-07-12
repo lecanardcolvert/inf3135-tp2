@@ -18,14 +18,14 @@ help_first_line="Usage: ../bin/isomap [-h|--help] [-s|--start X,Y,Z] [-e|--end X
     [ "${lines[0]}" = "$help_first_line" ]
 }
 
-@test "Reading map3x3.json file from stdin" {
+@test "Can read map3x3.json file from stdin" {
     run $prog < ../data/map3x3.json
     [ "$status" -eq 0 ]
     [ "${lines[0]}" = "Tileset of 3 tiles:" ]
     [ "${lines[4]}" = "A map of 2 layers" ]
 }
 
-@test "Reading map3x3.json file with option -i" {
+@test "Can read map3x3.json file with option -i" {
     run $prog -i ../data/map3x3.json
     [ "$status" -eq 0 ]
     [ "${lines[0]}" = "Tileset of 3 tiles:" ]
@@ -59,7 +59,7 @@ help_first_line="Usage: ../bin/isomap [-h|--help] [-s|--start X,Y,Z] [-e|--end X
 
 # Errors
 
-@test "Format dot not supported yet" {
+@test "Format \"dot\" not supported yet" {
     run $prog -f dot
     [ "$status" -eq 1 ]
     [ "${lines[0]}" = "Error: format dot not supported" ]
@@ -80,7 +80,7 @@ help_first_line="Usage: ../bin/isomap [-h|--help] [-s|--start X,Y,Z] [-e|--end X
     [ "${lines[1]}" = "$help_first_line" ]
 }
 
-@test "Output file path mandotyr with format \"png\"" {
+@test "Output file path mandatory with format \"png\"" {
     run $prog -f png
     [ "$status" -eq 3 ]
     [ "${lines[0]}" = "Error: output filename is mandatory with png format" ]
@@ -92,13 +92,13 @@ help_first_line="Usage: ../bin/isomap [-h|--help] [-s|--start X,Y,Z] [-e|--end X
     [ "${lines[1]}" = "Error: option not recognized" ]
 }
 
-@test "Invalid input file path" {
+@test "Handle invalid input file path" {
     run $prog -i "$BATS_TMPDIR/epic.fail"
     [ "$status" -eq 5 ]
     [ "${lines[0]}" = "Error: invalid file path" ]
 }
 
-@test "Invalid output file path" {
+@test "Handle invalid output file path" {
     run $prog -o "$BATS_TMPDIR/epic.fail/fail" < ../data/map3x3.json
     [ "$status" -eq 5 ]
     [ "${lines[0]}" = "Error: invalid file path" ]
