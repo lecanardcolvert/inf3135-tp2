@@ -22,33 +22,33 @@ help_first_line="Usage: ../bin/isomap [-h|--help] [-s|--start X,Y,Z] [-e|--end X
     run $prog < ../data/map3x3.json
     [ "$status" -eq 0 ]
     [ "${lines[0]}" = "Tileset of 3 tiles:" ]
-    [ "${lines[4]}" = "A map of 2 layers" ]
+    [ "${lines[10]}" = "A map of 2 layers" ]
 }
 
 @test "Can read map3x3.json file with option -i" {
     run $prog -i ../data/map3x3.json
     [ "$status" -eq 0 ]
     [ "${lines[0]}" = "Tileset of 3 tiles:" ]
-    [ "${lines[4]}" = "A map of 2 layers" ]
+    [ "${lines[10]}" = "A map of 2 layers" ]
 }
 
 @test "No walk in map3x3.json with default values for -s and -e" {
     run $prog -w < ../data/map3x3.json
     [ "$status" -eq 0 ]
-    [[ "${lines[13]}" =~ "No walk between" ]]
+    [[ "${lines[19]}" =~ "No walk between" ]]
 }
 
 @test "There is a walk of 5 nodes in map3x3.json with -s 0,0,1 and -e 2,2,1" {
     run $prog -w -s 0,0,1 -e 2,2,1 < ../data/map3x3.json
     [ "$status" -eq 0 ]
-    [[ "${lines[13]}" =~ "A walk of 5 nodes" ]]
+    [[ "${lines[19]}" =~ "A walk of 5 nodes" ]]
 }
 
 @test "Format \"text\" works with map3x3.json" {
     run $prog -f text < ../data/map3x3.json
     [ "$status" -eq 0 ]
     [ "${lines[0]}" = "Tileset of 3 tiles:" ]
-    [ "${lines[4]}" = "A map of 2 layers" ]
+    [ "${lines[10]}" = "A map of 2 layers" ]
 }
 
 @test "Format \"png\" works with map3x3.json" {
