@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifndef ROOT_DIR
+#define ROOT_DIR "."
+#endif
 #define PATH_LENGTH2 (PATH_LENGTH + 1 - sizeof(ROOT_DIR))
 
 // Implementation //
@@ -17,12 +20,16 @@
 void tile_print(FILE *stream,
                 const struct tile *tile,
                 const char *prefix) {
-    fprintf(stream, "%s   Tile id=%d with directions ", prefix, tile->id);
-    for (unsigned int d = 0; d < tile->num_directions; ++d) {
-        if (d > 0) fprintf(stream, ",");
-        geometry_print_vect(stream, tile->directions + d);
+    fprintf(stream, "%s  Tile id=%d\n", prefix, tile->id);
+    for (unsigned int o = 0; o <= 1; ++o) {
+        fprintf(stream, "%s    %s directions: ", prefix,
+                o == 0 ? "incoming" : "outgoing");
+        for (unsigned int d = 0; d < tile->num_directions[o]; ++d) {
+            if (d > 0) fprintf(stream, ",");
+            geometry_print_vect(stream, tile->directions[o] + d);
+        }
+        fprintf(stream, "\n");
     }
-    fprintf(stream, "\n");
 }
 
 // Implementation //
@@ -73,28 +80,33 @@ struct tile *tile_add_to_tileset(struct tileset *tileset,
     tileset->tiles[i].id = id;
     strncpy(tileset->tiles[i].filename, ROOT_DIR, PATH_LENGTH);
     strncat(tileset->tiles[i].filename, filename, PATH_LENGTH2);
-    tileset->tiles[i].directions = malloc(sizeof(struct vect));
-    tileset->tiles[i].num_directions = 0;
-    tileset->tiles[i].capacity = 1;
+    tileset->tiles[i].directions[0] = malloc(sizeof(struct vect));
+    tileset->tiles[i].num_directions[0] = 0;
+    tileset->tiles[i].capacity[0] = 1;
+    tileset->tiles[i].directions[1] = malloc(sizeof(struct vect));
+    tileset->tiles[i].num_directions[1] = 0;
+    tileset->tiles[i].capacity[1] = 1;
     ++tileset->num_tiles;
     return tileset->tiles + i;
 }
 
 void tile_add_direction(struct tileset *tileset, tile_id id,
-                        int dx, int dy, int dz) {
+                        int dx, int dy, int dz, bool incoming) {
     unsigned int i;
     for (i = 0;
          i < tileset->num_tiles && tileset->tiles[i].id < id;
          ++i);
     if (i < tileset->num_tiles && tileset->tiles[i].id == id) {
+        unsigned int o = incoming ? 0 : 1;
         struct tile *tile = tileset->tiles + i;
-        if (tile->num_directions == tile->capacity) {
-            tile->capacity *= 2;
-            tile->directions = realloc(tile->directions,
-                                       tile->capacity * sizeof(struct vect));
+        if (tile->num_directions[o] == tile->capacity[o]) {
+            tile->capacity[o] *= 2;
+            tile->directions[o]
+                = realloc(tile->directions[o],
+                          tile->capacity[o] * sizeof(struct vect));
         }
-        tile->directions[tile->num_directions] = (struct vect){dx, dy, dz};
-        ++tile->num_directions;
+        tile->directions[o][tile->num_directions[o]] = (struct vect){dx, dy, dz};
+        ++tile->num_directions[o];
     }
 }
 

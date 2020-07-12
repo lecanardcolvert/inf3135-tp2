@@ -13,11 +13,11 @@
  * A tile in a map
  */
 struct tile {
-    tile_id id;                  // The tile id
-    char filename[PATH_LENGTH];  // The filename of the image for the tile
-    struct vect *directions;     // The allowed directions
-    unsigned int num_directions; // The number of allowed directions
-    unsigned int capacity;       // The directions capacity
+    tile_id id;                     // The tile id
+    char filename[PATH_LENGTH];     // The filename of the image for the tile
+    struct vect *directions[2];     // The allowed directions
+    unsigned int num_directions[2]; // The number of allowed directions
+    unsigned int capacity[2];       // The directions capacity
 };
 
 /**
@@ -74,14 +74,16 @@ struct tile *tile_add_to_tileset(struct tileset *tileset,
  *
  * If the id of the tile is invalid, nothing happens.
  *
- * @param tileset  The tileset
- * @param tile_id  The id of the tile
- * @param dx       The x-coordinate of the direction
- * @param dy       The y-coordinate of the direction
- * @param dz       The z-coordinate of the direction
+ * @param tileset   The tileset
+ * @param tile_id   The id of the tile
+ * @param dx        The x-coordinate of the direction
+ * @param dy        The y-coordinate of the direction
+ * @param dz        The z-coordinate of the direction
+ * @param incoming  If true, the direction is incoming
+ *                  If false, the direction is outgoing
  */
 void tile_add_direction(struct tileset *tileset, tile_id id,
-                        int dx, int dy, int dz);
+                        int dx, int dy, int dz, bool incoming);
 
 /**
  * Return the tile by its id in a tileset
