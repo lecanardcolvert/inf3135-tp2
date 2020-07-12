@@ -16,7 +16,8 @@
  */
 void isomap_load_directions(struct isomap *isomap,
                             tile_id id,
-                            const json_t *json_directions) {
+                            const json_t *json_directions,
+                            bool incoming) {
     unsigned int i;
     json_t *json_direction;
     json_array_foreach(json_directions, i, json_direction) {
@@ -24,7 +25,7 @@ void isomap_load_directions(struct isomap *isomap,
         dx = json_integer_value(json_array_get(json_direction, 0));
         dy = json_integer_value(json_array_get(json_direction, 1));
         dz = json_integer_value(json_array_get(json_direction, 2));
-        tile_add_direction(isomap->tileset, id, dx, dy, dz);
+        tile_add_direction(isomap->tileset, id, dx, dy, dz, incoming);
     }
 }
 
@@ -41,7 +42,8 @@ void isomap_load_tileset(struct isomap *isomap, const json_t *json_tileset) {
         json_t *json_filename = json_object_get(json_tile, "filename");
         const char *filename = json_string_value(json_filename);
         tile_add_to_tileset(isomap->tileset, id, filename);
-        isomap_load_directions(isomap, id, json_object_get(json_tile, "directions"));
+        isomap_load_directions(isomap, id, json_object_get(json_tile, "incoming"), true);
+        isomap_load_directions(isomap, id, json_object_get(json_tile, "outgoing"), false);
     }
 }
 
