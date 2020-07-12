@@ -183,6 +183,12 @@ struct arguments parse_arguments(int argc, char *argv[]) {
     return arguments;
 }
 
+/**
+ * Print a walk in the isomap to stdout, if it exists
+ *
+ * @param isomap     The isomap
+ * @param arguments  The parsed arguments
+ */
 void print_walk(const struct isomap *isomap,
                 const struct arguments *arguments) {
     struct graph *graph = graph_create(isomap->map, isomap->tileset);
