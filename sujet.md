@@ -125,13 +125,40 @@ d'utiliser n'importe quel mécanisme visuel pour identifier le chemin. Par
 exemple, vous pourriez:
 
 * Pour l'option `dot`: colorier les sommets et les flèches qui font partie de
-  la marche dans le graphe généré par Graphviz
+  la marche dans le graphe généré par Graphviz. Par exemple, on s'attend à ce
+  que les deux commandes suivantes produisent les deux images qui suivent.
+
+```sh
+$ bin/isomap -f dot -w -s 0,0,1 -e 2,2,1 < data/map3x3.json | neato -Tpng -o graph3x3-w.png
+$ bin/isomap -f dot -w -s 9,0,1 -e 0,9,1 < data/map10x10-64x64.json | neato -Tpng -o graph10x10-w.png
+```
+
+| `graph3x3-w.png`                                                | `graph10x10-w.png`                                                |
+| --------------------------------------------------------------- | ----------------------------------------------------------------- |
+| <img src="images/graph3x3-w.png" alt="" style="height:300px;"/> | <img src="images/graph10x10-w.png" alt="" style="height:500px;"/> |
+
 * Pour l'option `png`: colorier en plus clair les tuiles qui font partie de la
-  marche dans l'image générée par Cairo
+  marche dans l'image générée par Cairo. Par exemple, on s'attend à ce que les
+  deux commandes suivantes produisent les deux images qui suivent.
+
+```sh
+$ bin/isomap -f png -w -s 0,0,1 -e 2,2,1 -o map3x3-w.png < data/map3x3.json
+$ bin/isomap -f png -w -s 9,0,1 -e 0,9,1 -o map10x10-w.png < data/map10x10-64x64.json
+```
+
+| `map3x3-w.png`           | `map10x10-w.png`           |
+| ------------------------ | -------------------------- |
+| ![](images/map3x3-w.png) | ![](images/map10x10-w.png) |
 
 Vos modifications devront être regroupées sur une branche nommée `draw-walk`,
 basée sur le *commit* le plus récent de la branche `dot-output`, puisqu'elle
 dépend des modifications apportées dans la tâche 2.
+
+*Astuce*: Pour « surligner » une tuile, il y a plusieurs façons de procéder.
+Une possibilité consiste à dessiner la tuile deux fois au même endroit en
+utilisant l'opérateur `CAIRO_OPERATOR_ADD` de Cairo, ce qui aura pour effet
+d'éclaircir le visuel. Noter que tout autre effet visuel montrant clairement
+que la tuile est « surlignée » peut être utilisé dans cette tâche.
 
 ### Dépendance/indépendance entre les tâches
 
