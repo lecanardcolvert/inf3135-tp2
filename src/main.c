@@ -197,6 +197,7 @@ void print_walk(const struct isomap *isomap,
         geometry_print_location(stdout, &arguments->start);
         printf(" and ");
         geometry_print_location(stdout, &arguments->end);
+        printf("\n");
     }
 }
 
