@@ -30,18 +30,22 @@ haut est décrite à l'aide du fichier suivant:
             {
                 "id": 1,
                 "filename": "./art/end-64x64.png",
-                "directions": [[1,0,-1], [-1,0,-1], [0,1,-1], [0,-1,-1]]
+                "incoming": [[1,0,-1], [-1,0,-1], [0,1,-1], [0,-1,-1]],
+                "outgoing": [[1,0,-1], [-1,0,-1], [0,1,-1], [0,-1,-1]]
             },
             {
                 "id": 2,
                 "filename": "./art/flat-64x64.png",
-                "directions": [[1,0,0], [-1,0,0], [0,1,0], [0,-1,0],
-                               [1,0,1], [-1,0,1], [0,1,1], [0,-1,1]]
+                "incoming": [[1,0,0], [-1,0,0], [0,1,0], [0,-1,0],
+                             [1,0,1], [-1,0,1], [0,1,1], [0,-1,1]],
+                "outgoing": [[1,0,0], [-1,0,0], [0,1,0], [0,-1,0],
+                             [1,0,1], [-1,0,1], [0,1,1], [0,-1,1]]
             },
             {
                 "id": 3,
                 "filename": "./art/start-64x64.png",
-                "directions": [[1,0,-1], [-1,0,-1], [0,1,-1], [0,-1,-1]]
+                "incoming": [[1,0,-1], [-1,0,-1], [0,1,-1], [0,-1,-1]],
+                "outgoing": [[1,0,-1], [-1,0,-1], [0,1,-1], [0,-1,-1]]
             }
         ],
     "layers":
@@ -75,11 +79,16 @@ $ bin/isomap -f png -o images/map3x3.png < data/map3x3.json
 Elle peut aussi être affichée au format texte:
 
 ```sh
-$ bin/isomap < data/map3x3.json
 Tileset of 3 tiles:
-   Tile id=1 with directions vect(1,0,-1),vect(-1,0,-1),vect(0,1,-1),vect(0,-1,-1)
-   Tile id=2 with directions vect(1,0,0),vect(-1,0,0),vect(0,1,0),vect(0,-1,0),vect(1,0,1),vect(-1,0,1),vect(0,1,1),vect(0,-1,1)
-   Tile id=3 with directions vect(1,0,-1),vect(-1,0,-1),vect(0,1,-1),vect(0,-1,-1)
+  Tile id=1
+    incoming directions: vect(1,0,-1),vect(-1,0,-1),vect(0,1,-1),vect(0,-1,-1)
+    outgoing directions: vect(1,0,-1),vect(-1,0,-1),vect(0,1,-1),vect(0,-1,-1)
+  Tile id=2
+    incoming directions: vect(1,0,0),vect(-1,0,0),vect(0,1,0),vect(0,-1,0),vect(1,0,1),vect(-1,0,1),vect(0,1,1),vect(0,-1,1)
+    outgoing directions: vect(1,0,0),vect(-1,0,0),vect(0,1,0),vect(0,-1,0),vect(1,0,1),vect(-1,0,1),vect(0,1,1),vect(0,-1,1)
+  Tile id=3
+    incoming directions: vect(1,0,-1),vect(-1,0,-1),vect(0,1,-1),vect(0,-1,-1)
+    outgoing directions: vect(1,0,-1),vect(-1,0,-1),vect(0,1,-1),vect(0,-1,-1)
 A map of 2 layers
   Layer 0: A layer of 3 rows and 3 columns (offset = (0,0,0))
     2 2 2 
@@ -191,10 +200,14 @@ JSON. Les spécifications sont les suivantes:
   * Un nom de fichier `filename` qui indique où se trouve l'image correspondant
     à la tuile. Si le chemin de l'image est relatif, il doit être relatif au
     répertoire duquel est invoqué le programme.
-  * Une liste `directions`, qui donne la liste des déplacements permis à partir
-    d'une tuile. Ces déplacements sont identifiés par des triplets `[dx,dy,dz]`
-    indiquant le déplacement permis au niveau des lignes (`dx`), des colonnes
-    (`dy`) et entre les couches (`dz`).
+  * Une liste `incoming`, qui donne la liste des déplacements permis lorsqu'on
+    vient *vers* la tuile (*incoming move*). Ces déplacements sont identifiés
+    par des triplets `[dx,dy,dz]` indiquant le déplacement permis au niveau des
+    lignes (`dx`), des colonnes (`dy`) et entre les couches (`dz`).
+  * Une liste `outgoing`, qui donne la liste des déplacements permis lorsqu'on
+    *quitte la tuile* (*outgoing move*). Ces déplacements sont identifiés par
+    des triplets `[dx,dy,dz]` indiquant le déplacement permis au niveau des
+    lignes (`dx`), des colonnes (`dy`) et entre les couches (`dz`).
 
 - La clé `layers`, qui donne une liste d'objet JSON qui contiennent des
   informations sur chaque couche. Une couche (en anglais, _layer_) est
