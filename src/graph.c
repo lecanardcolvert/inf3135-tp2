@@ -84,13 +84,20 @@ void graph_add_edges(struct graph *graph) {
         for (unsigned int j = 0; j < graph->num_nodes; ++j) {
             const struct location *location1 = &graph->nodes[i].location;
             const struct location *location2 = &graph->nodes[j].location;
-            const struct tile *tile = graph->nodes[i].tile;
-            for (unsigned int d = 0; d < tile->num_directions; ++d) {
-                const struct vect *direction = tile->directions + d;
-                if (location1->x + direction->dx == location2->x &&
-                    location1->y + direction->dy == location2->y &&
-                    location1->z + direction->dz == location2->z) {
-                    graph_add_neighbor_to_node(graph->nodes + i, graph->nodes + j);
+            const struct tile *u = graph->nodes[i].tile;
+            const struct tile *v = graph->nodes[j].tile;
+            for (unsigned int d = 0; d < u->num_directions[1]; ++d) {
+                const struct vect *dir1 = u->directions[1] + d;
+                for (unsigned int e = 0; e < v->num_directions[0]; ++e) {
+                    const struct vect *dir2 = v->directions[0] + e;
+                    if (dir1->dx == -dir2->dx &&
+                        dir1->dy == -dir2->dy &&
+                        dir1->dz == -dir2->dz &&
+                        location1->x + dir1->dx == location2->x &&
+                        location1->y + dir1->dy == location2->y &&
+                        location1->z + dir1->dz == location2->z) {
+                        graph_add_neighbor_to_node(graph->nodes + i, graph->nodes + j);
+                    }
                 }
             }
         }
