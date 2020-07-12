@@ -62,7 +62,7 @@ Par exemple, les commandes
 
 ```sh
 $ bin/isomap -f dot < data/map3x3.json | neato -Tpng -o graph3x3.png
-$ bin/isomap -f dot < data/map3x3.json | neato -Tpng -o graph10x10.png
+$ bin/isomap -f dot < data/map10x10-64x64.json | neato -Tpng -o graph10x10.png
 ```
 
 devraient produire des fichiers `graph3x3.png` et `graph10x10.png` dont les
