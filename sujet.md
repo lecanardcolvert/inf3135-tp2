@@ -6,7 +6,7 @@ Dans ce deuxième travail pratique, vous devez apporter des modifications à un
 programme qui permet de générer des [cartes
 isométriques](https://fr.wikipedia.org/wiki/Perspective_isom%C3%A9trique).
 
-Le travail doit être réalisé **seul**. Il doit être remis au plus tard le **26
+Le travail doit être réalisé **seul**. Il doit être remis au plus tard le **31
 juillet 2020** à **23h59**.  À partir de minuit, une pénalité de **2% par
 heure** de retard sera appliquée.
 
@@ -251,7 +251,7 @@ pouvant aller jusqu'à **50%** de la note totale pourrait être appliquée.
 
 ## Remise
 
-Votre travail doit être remis au plus tard le **26 juillet 2020** à **23h59**.
+Votre travail doit être remis au plus tard le **31 juillet 2020** à **23h59**.
 À partir de minuit, une pénalité de **2% par heure** de retard sera appliquée.
 
 La remise se fait **obligatoirement** par l'intermédiaire de la plateforme
