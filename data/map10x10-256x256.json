@@ -5,13 +5,13 @@
         [
             {
                 "id": 1,
-                "filename": "./art/end-64x64.png",
+                "filename": "./art/end-256x256.png",
                 "incoming": [[1,0,-1], [-1,0,-1], [0,1,-1], [0,-1,-1]],
                 "outgoing": [[1,0,-1], [-1,0,-1], [0,1,-1], [0,-1,-1]]
             },
             {
                 "id": 2,
-                "filename": "./art/flat-64x64.png",
+                "filename": "./art/flat-256x256.png",
                 "incoming": [[1,0,0], [-1,0,0], [0,1,0], [0,-1,0],
                              [1,0,1], [-1,0,1], [0,1,1], [0,-1,1]],
                 "outgoing": [[1,0,0], [-1,0,0], [0,1,0], [0,-1,0],
@@ -19,31 +19,31 @@
             },
             {
                 "id": 3,
-                "filename": "./art/ne-64x64.png",
+                "filename": "./art/ne-256x256.png",
                 "incoming": [[1,0,-1], [-1,0,0]],
                 "outgoing": [[1,0,-1], [-1,0,0]]
             },
             {
                 "id": 4,
-                "filename": "./art/nw-64x64.png",
+                "filename": "./art/nw-256x256.png",
                 "incoming": [[0,1,-1], [0,-1,0]],
                 "outgoing": [[0,1,-1], [0,-1,0]]
             },
             {
                 "id": 5,
-                "filename": "./art/se-64x64.png",
+                "filename": "./art/se-256x256.png",
                 "incoming": [[0,-1,-1], [0,1,0]],
                 "outgoing": [[0,-1,-1], [0,1,0]]
             },
             {
                 "id": 6,
-                "filename": "./art/start-64x64.png",
+                "filename": "./art/start-256x256.png",
                 "incoming": [[1,0,-1], [-1,0,-1], [0,1,-1], [0,-1,-1]],
                 "outgoing": [[1,0,-1], [-1,0,-1], [0,1,-1], [0,-1,-1]]
             },
             {
                 "id": 7,
-                "filename": "./art/sw-64x64.png",
+                "filename": "./art/sw-256x256.png",
                 "incoming": [[-1,0,-1], [1,0,0]],
                 "outgoing": [[-1,0,-1], [1,0,0]]
             }
