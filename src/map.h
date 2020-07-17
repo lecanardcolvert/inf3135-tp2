@@ -173,9 +173,9 @@ bool map_is_location_top_free(const struct map *map,
  * * When the returned value is `NULL`, it means that all locations have been
  *   iterated over
  *
- * @param map   The map
- * @param next  If true, starts from the first location
- *              If false, returns the next available location or NULL
+ * @param map         The map
+ * @param from_start  If true, starts from the first location
+ *                    If false, returns the next available location or NULL
  */
 const struct location *map_get_occupied_location(const struct map *map,
                                                  bool from_start);
