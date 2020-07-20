@@ -5,15 +5,23 @@
 #include <tap.h>
 
 int main () {
-    lives_ok({FILE *input = fopen("../data/map10x10-256x256.json", "r");
-              isomap_create_from_json_file(input);
-              fclose(input);},
-              "loading an isomap from a json file does not crash");
-    lives_ok({FILE *input = fopen("../data/map10x10-256x256.json", "r");
-              struct isomap *isomap = isomap_create_from_json_file(input);
-              fclose(input);isomap_print(stdout, isomap, "# ");
-              isomap_draw_to_png(isomap, "isomap.png");
-              isomap_delete(isomap);},
-              "and saving it to png neither");
+    const char *filename = "../data/map10x10-256x256.json";
+    FILE *input = fopen(filename, "r");
+    if (input != NULL) {
+        pass("correctly open %s", filename);
+    } else {
+        BAIL_OUT("problem opening %s", filename);
+    }
+    struct isomap *isomap = NULL;
+    lives_ok({isomap = isomap_create_from_json_file(input);},
+              "create isomap from %s", filename);
+    if (isomap == NULL) {
+        BAIL_OUT("could not create isomap %s", filename);
+    }
+    isomap_print(stdout, isomap, "# ");
+    lives_ok({isomap_draw_to_png(isomap, "isomap.png");},
+             "create png file from isomap");
+    isomap_delete(isomap);
+    fclose(input);
     done_testing();
 }
