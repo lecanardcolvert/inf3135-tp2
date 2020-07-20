@@ -12,15 +12,11 @@ int main () {
     } else {
         BAIL_OUT("problem opening %s", filename);
     }
-    struct isomap *isomap = NULL;
-    lives_ok({isomap = isomap_create_from_json_file(input);},
-              "create isomap from %s", filename);
-    if (isomap == NULL) {
-        BAIL_OUT("could not create isomap %s", filename);
-    }
+    struct isomap *isomap = isomap_create_from_json_file(input);
+    pass("create isomap from %s", filename);
     isomap_print(stdout, isomap, "# ");
-    lives_ok({isomap_draw_to_png(isomap, "isomap.png");},
-             "create png file from isomap");
+    isomap_draw_to_png(isomap, "isomap.png");
+    pass("create png file from isomap");
     isomap_delete(isomap);
     fclose(input);
     done_testing();
