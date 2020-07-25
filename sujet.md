@@ -77,8 +77,51 @@ tuiles, ce qui permet d'avoir une représentation logique d'une carte,
 complémentaire à la représentation visuelle obtenue avec l'option `-f png`. Il
 n'est pas obligatoire de colorier les noeuds comme dans les exemples ci-haut
 (un schéma de couleur a été utilisé, de telle sorte que, plus une tuile est
-foncée, plus elle est sur une couche élevée), mais la relation d'adjacence
-entre les noeuds devrait être la même.
+foncée, plus elle est sur une couche élevée). À titre d'exemple, voici ce que
+j'obtiens comme chaîne DOT pour le fichier `data/map3x3.json`:
+
+```sh
+$ bin/isomap -f dot < data/map3x3.json
+digraph {
+  node[shape=box, style=filled, colorscheme=orrd9];
+  0 [label="(0,1,0)", fillcolor=1];
+  1 [label="(0,2,0)", fillcolor=1];
+  2 [label="(1,0,0)", fillcolor=1];
+  3 [label="(1,1,0)", fillcolor=1];
+  4 [label="(1,2,0)", fillcolor=1];
+  5 [label="(2,0,0)", fillcolor=1];
+  6 [label="(2,1,0)", fillcolor=1];
+  7 [label="(0,0,1)", fillcolor=2];
+  8 [label="(2,2,1)", fillcolor=2];
+  0 -> 1;
+  0 -> 3;
+  0 -> 7;
+  1 -> 0;
+  1 -> 4;
+  2 -> 3;
+  2 -> 5;
+  2 -> 7;
+  3 -> 0;
+  3 -> 2;
+  3 -> 4;
+  3 -> 6;
+  4 -> 1;
+  4 -> 3;
+  4 -> 8;
+  5 -> 2;
+  5 -> 6;
+  6 -> 3;
+  6 -> 5;
+  6 -> 8;
+  7 -> 0;
+  7 -> 2;
+  8 -> 4;
+  8 -> 6;
+}
+```
+
+Le seul critère qui sera pris en compte lors de la correction est si vous avez
+les mêmes noeuds et les mêmes arcs (bref, les graphes doivent être isomorphes).
 
 Vos modifications devront être regroupées sur une branche nommée `dot-output`,
 également basée sur le *commit* le plus récent de la branche `master`.
