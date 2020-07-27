@@ -44,6 +44,10 @@ struct tileset *tile_create_tileset(void) {
 }
 
 void tile_delete_tileset(struct tileset *tileset) {
+    for (unsigned int i = 0; i < tileset->num_tiles; ++i) {
+        free(tileset->tiles[i].directions[0]);
+        free(tileset->tiles[i].directions[1]);
+    }
     free(tileset->tiles);
     free(tileset);
 }
