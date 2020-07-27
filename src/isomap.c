@@ -142,7 +142,11 @@ void isomap_draw_to_png(const struct isomap *isomap,
         cairo_surface_destroy(surface);
     }
     cairo_surface_write_to_png(output_image, output_filename);
-    cairo_surface_destroy(output_image);
+    
+    unsigned int refCount = cairo_surface_get_reference_count(output_image);
+    for (unsigned int i = 0; i < refCount; i++) {
+        cairo_surface_destroy(output_image);
+    }
 }
 
 void isomap_print(FILE *stream, const struct isomap *isomap, const char *prefix) {
