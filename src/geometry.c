@@ -1,5 +1,6 @@
 #include "geometry.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 struct vect geometry_box_to_vect(const struct box *b) {
     return (struct vect){b->xmax - b->xmin,
@@ -33,4 +34,11 @@ bool geometry_equal_vect(const struct vect *v1,
     return v1->dx == v2->dx &&
            v1->dy == v2->dy &&
            v1->dz == v2->dz;
+}
+
+char *geometry_location_to_str(const struct location *l) {
+    char *location_str = malloc(sizeof("(,,)") + sizeof(l->x) 
+                              + sizeof(l->y) + sizeof(l->z));
+    sprintf(location_str, "(%i,%i,%i)", l->x, l->y, l->z);
+    return location_str;
 }

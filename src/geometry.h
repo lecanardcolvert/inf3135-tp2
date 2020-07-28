@@ -91,4 +91,12 @@ bool geometry_equal_location(const struct location *l1,
 bool geometry_equal_vect(const struct vect *v1,
                          const struct vect *v2);
 
+/**
+ * Return the string of a location in the (x,y,z) format
+ *
+ * @param l       The location
+ * @return        A pointer to a string containing the location (x,y,z)  
+ */
+char *geometry_location_to_str(const struct location *l);
+
 #endif
