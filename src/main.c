@@ -206,6 +206,7 @@ void print_walk(const struct isomap *isomap,
         printf("\n");
     }
     graph_delete(graph);
+    graph_delete_walk(walk);
 }
 
 int main(int argc, char *argv[]) {
