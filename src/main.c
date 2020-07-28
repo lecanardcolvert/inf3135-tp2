@@ -35,7 +35,7 @@ Optional arguments:\n\
   -w|--with-walk             Also display a shortest walk between\n\
                              the start and end locations.\n\
   -f|--output-format FORMAT  Select the ouput format (either text,\n\
-                             or png). The default format is text.\n\
+                             dot, or png). The default format is text.\n\
   -i|--input-filename PATH   Read the JSON file from the file PATH\n\
                              If present, ignore stdin.\n\
   -o|--output-filename PATH  Write the output to the file PATH.\n\
@@ -170,6 +170,7 @@ struct arguments parse_arguments(int argc, char *argv[]) {
         print_usage(argv, stderr);
         exit(ISOMAP_ERROR_COORDINATES);
     } else if (strcmp(arguments.output_format, "text") != 0 &&
+               strcmp(arguments.output_format, "dot") != 0 && 
                strcmp(arguments.output_format, "png")  != 0) {
         fprintf(stderr, "Error: format %s not supported\n", arguments.output_format);
         print_usage(argv, stderr);
@@ -233,6 +234,10 @@ int main(int argc, char *argv[]) {
             isomap_print(output, isomap, "");
             if (arguments.with_walk) print_walk(isomap, &arguments);
             if (output != stdout) fclose(output);
+        } else if (strcmp(arguments.output_format, "dot") == 0) {
+            struct graph *graph = graph_create(isomap->map, isomap->tileset);
+            graph_print_to_dot(output, graph);
+            graph_delete(graph);
         } else if (strcmp(arguments.output_format, "png") == 0) {
             isomap_draw_to_png(isomap, arguments.output_filename);
         }

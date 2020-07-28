@@ -169,6 +169,10 @@ void graph_print(FILE *stream, const struct graph *graph, const char *prefix) {
     }
 }
 
+void graph_print_to_dot(FILE *stream, const struct graph *graph) {
+    // TODO Compléter cette fonction
+}
+
 struct graph_walk *graph_retrieve_walk(struct graph_node **predecessors,
                                        struct graph_node *start_node,
                                        struct graph_node *end_node) {

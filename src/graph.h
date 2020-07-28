@@ -104,6 +104,18 @@ void graph_print(FILE *stream,
                  const char *prefix);
 
 /**
+ * Print the given graph to a stream in the DOT format
+ * 
+ * See this page for more details about the DOT language:
+ * https://graphviz.org/doc/info/lang.html
+ *
+ * @param stream  The stream
+ * @param graph   The graph to print
+ */
+void graph_print_to_dot(FILE *stream,
+                        const struct graph *graph);
+
+/**
  * Return a shortest walk between two locations in a map
  *
  * If such a walk does not exist, then NULL is returned.
