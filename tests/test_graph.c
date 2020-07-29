@@ -10,6 +10,7 @@ int main () {
     isomap_print(stdout, isomap, "# ");
     struct graph *graph = graph_create(isomap->map, isomap->tileset);
     graph_print(stdout, graph, "# ");
+    graph_print_to_dot(stdout, graph);
     struct location start = {0, 9, 1};
     struct location end = {9, 0, 1};
     struct graph_walk *walk = graph_shortest_walk(graph, &start, &end);

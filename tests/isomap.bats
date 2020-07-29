@@ -57,14 +57,17 @@ help_first_line="Usage: ../bin/isomap [-h|--help] [-s|--start X,Y,Z] [-e|--end X
     [ -f "$BATS_TMPDIR/map3x3.png" ]
 }
 
-# Errors
-
-@test "Format \"dot\" not supported yet" {
-    run $prog -f dot
-    [ "$status" -eq 1 ]
-    [ "${lines[0]}" = "Error: format dot not supported" ]
-    [ "${lines[1]}" = "$help_first_line" ]
+@test "Format \"dot\" works with map3x3.json" {
+    run $prog -f dot < ../data/map3x3.json
+    [ "$status" -eq 0 ]
+    [ "${lines[0]}" = "digraph {" ]
+    [ "${lines[2]}" = "	0 [label=\"(0,1,0)\"];" ]
+    [ "${lines[3]}" = "	1 [label=\"(0,2,0)\"];" ]
+    [ "${lines[11]}" = "	0 -> 1;" ]
+    [ "${lines[35]}" = "}" ]
 }
+
+# Errors
 
 @test "Wrong coordinates with -s a,2,2" {
     run $prog -s a,2,2
