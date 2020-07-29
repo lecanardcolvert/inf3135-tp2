@@ -173,28 +173,19 @@ void graph_print_to_dot(FILE *stream, const struct graph *graph) {
     // TODO Compléter cette fonction
     fprintf(stream, "digraph {\n");
     fprintf(stream, "node[shape=box, style=filled, colorscheme=orrd9];\n");
-    
+
     for (unsigned int i = 0; i < graph->num_nodes; ++i) {
         struct graph_node *node = &graph->nodes[i];
         char *location_str = geometry_location_to_str(&node->location);
         fprintf(stream, "%i [label=\"%s\"];\n", node->index, location_str);
         free(location_str);
+        
+        for (unsigned int j = 0; j < node->num_neighbors; ++j) {
+            struct graph_node *neighbor = node->neighbors[j];
+            fprintf(stream, "%i -> %i;\n", node->index, neighbor->index);
+        }
     }
-    
     fprintf(stream, "}\n");
-    /*
-     * digraph {
-     * node[shape=box, style=filled,colorscheme=orrd9];
-     * 
-     * 0 [label="(0,1,0)", fillcolor=1];
-     * 1 [label="(0,2,0)", fillcolor=1];
-     * Repeat...
-     * 
-     * 0 -> 1;
-     * 0 -> 3;
-     * Repeat...
-     * }
-     */
 }
 
 struct graph_walk *graph_retrieve_walk(struct graph_node **predecessors,
