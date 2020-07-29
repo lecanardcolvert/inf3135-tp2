@@ -76,7 +76,7 @@ La petite carte a été générée à l'aide de la commande
 $ bin/isomap -f png -o images/map3x3.png < data/map3x3.json
 ```
 
-Elle peut aussi être affichée au format texte:
+Elle peut être affichée au format texte :
 
 ```sh
 Tileset of 3 tiles:
@@ -99,6 +99,55 @@ A map of 2 layers
     0 0 0 
     0 0 3 
 ```
+
+Il est aussi possible de générer un fichier DOT des tuiles et des déplacements
+possibles entre elles.
+
+```sh
+digraph {
+	node[shape=box];
+	0 [label="(0,1,0)"];
+	1 [label="(0,2,0)"];
+	2 [label="(1,0,0)"];
+	3 [label="(1,1,0)"];
+	4 [label="(1,2,0)"];
+	5 [label="(2,0,0)"];
+	6 [label="(2,1,0)"];
+	7 [label="(0,0,1)"];
+	8 [label="(2,2,1)"];
+	0 -> 1;
+	0 -> 3;
+	0 -> 7;
+	1 -> 0;
+	1 -> 4;
+	2 -> 3;
+	2 -> 5;
+	2 -> 7;
+	3 -> 0;
+	3 -> 2;
+	3 -> 4;
+	3 -> 6;
+	4 -> 1;
+	4 -> 3;
+	4 -> 8;
+	5 -> 2;
+	5 -> 6;
+	6 -> 3;
+	6 -> 5;
+	6 -> 8;
+	7 -> 0;
+	7 -> 2;
+	8 -> 4;
+	8 -> 6;
+}
+```
+
+Vous pouvez utiliser le logiciel [Graphviz](https://www.graphviz.org/) pour 
+générer une image à partir de ce fichier. Par exemple, le fichier ci-dessus 
+permet de générer cette image :
+
+![](images/map3x3-dot.png)
+
 
 ## Installation et fonctionnement
 
@@ -135,7 +184,7 @@ Optional arguments:
   -w|--with-walk             Also display a shortest walk between
                              the start and end locations.
   -f|--output-format FORMAT  Select the ouput format (either text,
-                             or png). The default format is text.
+                             dot, or png). The default format is text.
   -i|--input-filename PATH   Read the JSON file from the file PATH
                              If present, ignore stdin.
   -o|--output-filename PATH  Write the output to the file PATH.
