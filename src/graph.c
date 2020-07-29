@@ -170,21 +170,28 @@ void graph_print(FILE *stream, const struct graph *graph, const char *prefix) {
 }
 
 void graph_print_to_dot(FILE *stream, const struct graph *graph) {
-    // TODO Compléter cette fonction
     fprintf(stream, "digraph {\n");
-    fprintf(stream, "node[shape=box, style=filled, colorscheme=orrd9];\n");
+    
+    // Paramètres par défaut pour les noeuds
+    fprintf(stream, "\tnode[shape=box];\n");
 
+    // Premièrement affiche les noeuds
     for (unsigned int i = 0; i < graph->num_nodes; ++i) {
         struct graph_node *node = &graph->nodes[i];
         char *location_str = geometry_location_to_str(&node->location);
-        fprintf(stream, "%i [label=\"%s\"];\n", node->index, location_str);
+        fprintf(stream, "\t%i [label=\"%s\"];\n", node->index, location_str);
         free(location_str);
-        
+    }
+    
+    // Ensuite affiche les liens
+    for (unsigned int i = 0; i < graph->num_nodes; ++i) {
+        struct graph_node *node = &graph->nodes[i];
         for (unsigned int j = 0; j < node->num_neighbors; ++j) {
             struct graph_node *neighbor = node->neighbors[j];
-            fprintf(stream, "%i -> %i;\n", node->index, neighbor->index);
+            fprintf(stream, "\t%i -> %i;\n", node->index, neighbor->index);
         }
     }
+    
     fprintf(stream, "}\n");
 }
 
