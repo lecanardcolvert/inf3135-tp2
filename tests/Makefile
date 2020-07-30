@@ -30,6 +30,7 @@ test-internal:
 	./test_map
 	./test_tile
 	./test_isomap
+	./test_jsonvalidation
 	./test_graph
 
 test-bats:
