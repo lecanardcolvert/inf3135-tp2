@@ -1,6 +1,7 @@
 #include "isomap.h"
 #include "map.h"
 #include "tile.h"
+#include "jsonvalidation.h"
 #include <jansson.h>
 #include <cairo.h>
 
@@ -80,23 +81,28 @@ void isomap_load_map(struct isomap *isomap, const json_t *json_layers) {
 // --------- //
 
 struct isomap *isomap_create_from_json_file(FILE *file) {
-    struct isomap *isomap;
+    struct isomap *isomap = NULL;
 
     json_t *json_root, *json_tileset, *json_layers;
     json_error_t error;
-    json_root = json_loadf(file, 0, &error);
-    json_tileset = json_object_get(json_root, "tileset");
-    json_layers = json_object_get(json_root, "layers");
-    isomap = malloc(sizeof(struct isomap));
-    isomap->tile_width
-        = json_integer_value(json_object_get(json_root, "tile-width"));
-    isomap->z_offset
-        = json_integer_value(json_object_get(json_root, "z-offset"));
-    isomap->tileset = tile_create_tileset();
-    isomap->map = map_create();
-    isomap_load_tileset(isomap, json_tileset);
-    isomap_load_map(isomap, json_layers);
-    json_decref(json_root);
+    
+    int validation_error = jsonvalidation_validate_file(file);
+    if (validation_error != 0) {
+        json_root = json_loadf(file, 0, &error);
+        json_tileset = json_object_get(json_root, "tileset");
+        json_layers = json_object_get(json_root, "layers");
+        isomap = malloc(sizeof(struct isomap));
+        isomap->tile_width
+            = json_integer_value(json_object_get(json_root, "tile-width"));
+        isomap->z_offset
+            = json_integer_value(json_object_get(json_root, "z-offset"));
+        isomap->tileset = tile_create_tileset();
+        isomap->map = map_create();
+        isomap_load_tileset(isomap, json_tileset);
+        isomap_load_map(isomap, json_layers);
+        json_decref(json_root);
+    }
+    
     return isomap;
 }
 
