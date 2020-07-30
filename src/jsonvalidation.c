@@ -209,7 +209,7 @@ unsigned int jsonvalidation_validate_tile_filename(const json_t *tile) {
         error_no = JSONVALIDATION_BAD_TILE_FILENAME_VALUE;
     } else {        
         const char* filename = json_string_value(key);
-        if (access(filename, R_OK) != -1) {
+        if (access(filename, R_OK) == -1) {
             error_no = JSONVALIDATION_NONEXISTENT_TILE_FILE;
         }
     }
