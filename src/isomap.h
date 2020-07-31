@@ -9,6 +9,7 @@
 #define ISOMAP_H
 
 #include <stdio.h>
+#include "geometry.h"
 
 // Types //
 // ----- //
@@ -40,12 +41,19 @@ void isomap_delete(struct isomap *isomap);
 
 /**
  * Draw an isomap to a PNG file
+ * It can also highlight the tiles of a walk from start to end,
+ * if both values are not NULL. No tiles will be highlighted
+ * if a walk is not possible.
  *
  * @param isomap           The map to be drawn
  * @param output_filename  The output filename
+ * @param start            The start of the walk
+ * @param end              The end of the walk
  */
 void isomap_draw_to_png(const struct isomap *isomap,
-                        const char *output_filename);
+                        const char *output_filename, 
+                        const struct location *start, 
+                        const struct location *end);
 
 /**
  * Print an isomap to a stream

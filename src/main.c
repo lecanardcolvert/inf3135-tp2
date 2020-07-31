@@ -242,7 +242,10 @@ int main(int argc, char *argv[]) {
             if (!arguments.with_walk) graph_print_to_dot(output, graph);
             graph_delete(graph);
         } else if (strcmp(arguments.output_format, "png") == 0) {
-            isomap_draw_to_png(isomap, arguments.output_filename);
+            if (arguments.with_walk) isomap_draw_to_png(isomap,
+                arguments.output_filename, &arguments.start, &arguments.end);
+            else isomap_draw_to_png(isomap, arguments.output_filename, NULL, 
+                                    NULL);
         }
         isomap_delete(isomap);
     }

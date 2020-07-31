@@ -1,4 +1,5 @@
 #include "isomap.h"
+#include "graph.h"
 #include "map.h"
 #include "tile.h"
 #include <jansson.h>
@@ -107,7 +108,17 @@ void isomap_delete(struct isomap *isomap) {
 }
 
 void isomap_draw_to_png(const struct isomap *isomap,
-                        const char *output_filename) {
+                        const char *output_filename, 
+                        const struct location *start, 
+                        const struct location *end) {
+    struct graph *graph = NULL;
+    struct graph_walk *walk = NULL;
+
+    if ((start != NULL) && (end != NULL)) {
+        graph = graph_create(isomap->map, isomap->tileset);
+        walk = graph_shortest_walk(graph, start, end);
+    }
+    
     struct box bounding_box = map_get_bounding_box(isomap->map);
     struct vect box_vect = geometry_box_to_vect(&bounding_box);
     int h_step = isomap->tile_width / 2;
@@ -120,30 +131,52 @@ void isomap_draw_to_png(const struct isomap *isomap,
         = v_step * (box_vect.dx + box_vect.dy + 2) + l_step * (box_vect.dz + 2);
     cairo_surface_t *output_image =
         cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
-                                   surface_width, surface_height);
+                                surface_width, surface_height);
     cairo_t *cr = cairo_create(output_image);
     cairo_set_source_rgb(cr, 0, 0.1, 0);
     cairo_rectangle(cr, 0, 0, surface_width, surface_height);
     cairo_fill(cr);
     const struct location *location;
     for (location = map_get_occupied_location(isomap->map, true);
-         location != NULL;
-         location = map_get_occupied_location(isomap->map, false)) {
+        location != NULL;
+        location = map_get_occupied_location(isomap->map, false)) {
         int origin_x = h_step * (box_vect.dx + 0.5);
         int origin_y = (box_vect.dz - location->z) * l_step;
         int x = origin_x - location->x * h_step + location->y * h_step;
         int y = origin_y + location->x * v_step + location->y * v_step;
         tile_id id = map_get_tile_by_location(isomap->map, location->x,
-                                              location->y, location->z);
+                                            location->y, location->z);
         struct tile *tile = tile_by_id(isomap->tileset, id);
         cairo_surface_t *surface = cairo_image_surface_create_from_png(tile->filename);
         cairo_set_source_surface(cr, surface, x, y);
-        cairo_paint(cr);
+        
+        if (walk != NULL) {
+            for (unsigned int i = 0; i < walk->num_nodes; ++i) {
+                const struct location *node_location = &walk->nodes[i]->location;
+                if (geometry_equal_location(location, node_location)) {
+                    cairo_paint(cr);
+                    cairo_set_operator(cr, CAIRO_OPERATOR_ADD);
+                    cairo_paint(cr);
+                    cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
+                    break;
+                } else if (i == walk->num_nodes - 1) {
+                    cairo_paint(cr);
+                }
+            }
+        } else {
+            cairo_paint(cr);
+        }
+
         cairo_surface_destroy(surface);
+    }
+    
+    if (walk != NULL) {
+        graph_delete_walk(walk);
+        graph_delete(graph);
     }
     cairo_surface_write_to_png(output_image, output_filename);
     cairo_surface_destroy(output_image);
-}
+};
 
 void isomap_print(FILE *stream, const struct isomap *isomap, const char *prefix) {
     tile_print_tileset(stream, isomap->tileset, prefix);
