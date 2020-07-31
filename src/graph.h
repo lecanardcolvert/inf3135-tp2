@@ -116,6 +116,42 @@ void graph_print_to_dot(FILE *stream,
                         const struct graph *graph);
 
 /**
+ * Print the given graph to a stream in the DOT format, wich
+ * a colored line from start to end of the walk
+ * 
+ * See this page for more details about the DOT language:
+ * https://graphviz.org/doc/info/lang.html
+ *
+ * @param stream  The stream
+ * @param graph   The graph to print
+ * @param start   The starting point of the walk
+ * @param end     The ending point of the walk
+ */
+void graph_print_to_dot_walk(FILE *stream, const struct graph *graph, 
+                             struct location *start, struct location *end);
+
+/**
+ * Indicate if a node is present in a walk
+ *
+ * @param walk  The walk to analyze
+ * @param node  The node to search
+ * @return      true if the node is found
+ *              false otherwise
+ */
+bool graph_walk_has_node(const struct graph_walk *walk, const struct graph_node *node);
+
+/**
+ * Return the next node following a node in a walk
+ *
+ * @param walk  The walk to analyze
+ * @param node  The node to search
+ * @return      The next node if there is one
+ *              NULL otherwise
+ */
+struct graph_node* graph_walk_next_node(const struct graph_walk *walk,
+                                        const struct graph_node *node);
+
+/**
  * Return a shortest walk between two locations in a map
  *
  * If such a walk does not exist, then NULL is returned.

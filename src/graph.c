@@ -182,7 +182,7 @@ void graph_print_to_dot(FILE *stream, const struct graph *graph) {
         fprintf(stream, "\t%i [label=\"%s\"];\n", node->index, location_str);
         free(location_str);
     }
-    
+
     // Ensuite affiche les liens
     for (unsigned int i = 0; i < graph->num_nodes; ++i) {
         struct graph_node *node = &graph->nodes[i];
@@ -193,6 +193,89 @@ void graph_print_to_dot(FILE *stream, const struct graph *graph) {
     }
     
     fprintf(stream, "}\n");
+}
+
+void graph_print_to_dot_walk(FILE *stream, const struct graph *graph, 
+                             struct location *start, struct location *end) {
+    const struct graph_walk *walk = graph_shortest_walk(graph, start, end);
+    
+    if (walk != NULL) {
+        fprintf(stream, "digraph {\n");
+        fprintf(stream, "\tnode[shape=box,style=filled];\n");
+    
+        // Afficher les noeuds
+        for (unsigned int i = 0; i < graph->num_nodes; ++i) {
+            struct graph_node *node = &graph->nodes[i];
+            char *location_str = geometry_location_to_str(&node->location);
+
+            for (unsigned int j = 0; j < walk->num_nodes; ++j) {
+                struct graph_node *node_walk = walk->nodes[j];
+                
+                if (node == node_walk) {
+                    fprintf(stream, "\t%i [label=\"%s\", fontcolor=white, fillcolor=blue];\n", 
+                            node->index, location_str);
+                    break;
+                } else if (j == walk->num_nodes - 1) {
+                    fprintf(stream, "\t%i [label=\"%s\"];\n", node->index, location_str);
+                }
+            }
+            free(location_str);
+        }
+        
+        // Afficher les liens
+        for (unsigned int i = 0; i < graph->num_nodes; ++i) {
+            struct graph_node *node = &graph->nodes[i];
+            
+            for (unsigned int j = 0; j < node->num_neighbors; ++j) {
+                struct graph_node *neighbor = node->neighbors[j];
+                
+                if (graph_walk_has_node(walk, node) && 
+                    graph_walk_next_node(walk, node) == neighbor) {
+                    fprintf(stream, "\t%i -> %i [color=blue, style=dashed];\n", 
+                    node->index, neighbor->index);
+                } else {
+                    fprintf(stream, "\t%i -> %i;\n", node->index, neighbor->index);
+                }
+            }
+        }
+    
+    fprintf(stream, "}\n");
+     
+    } else {
+        graph_print_to_dot(stream, graph);
+    }
+}
+
+bool graph_walk_has_node(const struct graph_walk *walk, 
+                         const struct graph_node *node_search) {
+    bool has_node = false;
+    
+    for (unsigned int i = 0; i < walk->num_nodes; ++i) {
+        struct graph_node *node = walk->nodes[i];
+        
+        if (node_search == node) {
+            has_node = true;
+            break;
+        }
+    }
+    
+    return has_node;
+}
+
+struct graph_node* graph_walk_next_node(const struct graph_walk *walk,
+                                        const struct graph_node *node) {
+    struct graph_node *next_node = NULL;
+    
+    for (unsigned int i = 0; i < walk->num_nodes; ++i) {
+        struct graph_node *node_search = walk->nodes[i];
+        
+        if (node_search == node) {
+            next_node = walk->nodes[i + 1];
+            break;
+        }
+    }
+    
+    return next_node;
 }
 
 struct graph_walk *graph_retrieve_walk(struct graph_node **predecessors,

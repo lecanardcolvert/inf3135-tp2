@@ -236,7 +236,10 @@ int main(int argc, char *argv[]) {
             if (output != stdout) fclose(output);
         } else if (strcmp(arguments.output_format, "dot") == 0) {
             struct graph *graph = graph_create(isomap->map, isomap->tileset);
-            graph_print_to_dot(output, graph);
+            if (arguments.with_walk) graph_print_to_dot_walk(output, graph,
+                                                            &arguments.start,
+                                                            &arguments.end);
+            if (!arguments.with_walk) graph_print_to_dot(output, graph);
             graph_delete(graph);
         } else if (strcmp(arguments.output_format, "png") == 0) {
             isomap_draw_to_png(isomap, arguments.output_filename);
