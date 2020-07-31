@@ -128,7 +128,8 @@ void graph_print_to_dot(FILE *stream,
  * @param end     The ending point of the walk
  */
 void graph_print_to_dot_walk(FILE *stream, const struct graph *graph, 
-                             struct location *start, struct location *end);
+                             const struct location *start, 
+                             const struct location *end);
 
 /**
  * Indicate if a node is present in a walk

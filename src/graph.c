@@ -196,8 +196,9 @@ void graph_print_to_dot(FILE *stream, const struct graph *graph) {
 }
 
 void graph_print_to_dot_walk(FILE *stream, const struct graph *graph, 
-                             struct location *start, struct location *end) {
-    const struct graph_walk *walk = graph_shortest_walk(graph, start, end);
+                             const struct location *start, 
+                             const struct location *end) {
+    struct graph_walk *walk = graph_shortest_walk(graph, start, end);
     
     if (walk != NULL) {
         fprintf(stream, "digraph {\n");
@@ -244,6 +245,8 @@ void graph_print_to_dot_walk(FILE *stream, const struct graph *graph,
     } else {
         graph_print_to_dot(stream, graph);
     }
+    
+    graph_delete_walk(walk);
 }
 
 bool graph_walk_has_node(const struct graph_walk *walk, 
