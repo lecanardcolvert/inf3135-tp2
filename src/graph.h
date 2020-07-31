@@ -116,7 +116,7 @@ void graph_print_to_dot(FILE *stream,
                         const struct graph *graph);
 
 /**
- * Print the given graph to a stream in the DOT format, wich
+ * Print the given graph to a stream in the DOT format, with
  * a colored line from start to end of the walk
  * 
  * See this page for more details about the DOT language:
