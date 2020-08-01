@@ -13,6 +13,13 @@ qui sont simplement des images. Voici des exemples de telles cartes:
 | ---------------------- | ------------------------ |
 | ![](images/map3x3.png) | ![](images/map10x10.png) |
 
+Il est aussi possible de générer des cartes qui contiennent un tracé d'une
+marche entre un point de départ et de fin. Voici des exemples :
+
+| Une petite carte       | Une plus grande carte    |
+| ---------------------- | ------------------------ |
+| ![](images/map3x3-walk.png) | ![](images/map10x10-walk.png) |
+
 Les tuiles utilisées pour produire ces carte se trouvent dans le répertoire
 `art`. Elles ont été conçues à l'aide du logiciel libre
 [Blender](https://www.blender.org/).
@@ -70,10 +77,16 @@ haut est décrite à l'aide du fichier suivant:
 }
 ```
 
-La petite carte a été générée à l'aide de la commande
+La petite carte sans tracé a été générée à l'aide de la commande
 
 ```sh
 $ bin/isomap -f png -o images/map3x3.png < data/map3x3.json
+```
+
+La petite carte avec tracé a été générée à l'aide de la commande
+
+```sh
+$ bin/isomap -f png -w -s 0,0,1 -e 2,2,1 -o map3x3-walk.png < data/map3x3.json
 ```
 
 Elle peut être affichée au format texte :
@@ -101,7 +114,14 @@ A map of 2 layers
 ```
 
 Il est aussi possible de générer un fichier DOT des tuiles et des déplacements
-possibles entre elles.
+possibles entre elles, avec ou sans tracé d'un marche entre un point de départ 
+et de fin.
+
+Par exemple, cette commande permet de générer un fichier DOT, sans point de 
+départ et de fin.
+```sh
+$ bin/isomap -f dot < data/map3x3.json
+```
 
 ```sh
 digraph {
@@ -148,6 +168,62 @@ permet de générer cette image :
 
 ![](images/map3x3-dot.png)
 
+L'image a été généré avec la commande suivante :
+
+```sh
+$ bin/isomap -f dot < data/map3x3.json | neato -Tpng -o graph3x3.png
+```
+
+Il est aussi possible de générer un fichier DOT, avec le tracé d'un chemin 
+entre un point de départ et de fin.
+
+```sh
+$ bin/isomap -f dot -w -s 0,0,1 -e 2,2,1 < data/map3x3.json
+```
+
+```sh
+digraph {
+	node[shape=box,style=filled];
+	0 [label="(0,1,0)", fontcolor=white, fillcolor=blue];
+	1 [label="(0,2,0)", fontcolor=white, fillcolor=blue];
+	2 [label="(1,0,0)"];
+	3 [label="(1,1,0)"];
+	4 [label="(1,2,0)", fontcolor=white, fillcolor=blue];
+	5 [label="(2,0,0)"];
+	6 [label="(2,1,0)"];
+	7 [label="(0,0,1)", fontcolor=white, fillcolor=blue];
+	8 [label="(2,2,1)", fontcolor=white, fillcolor=blue];
+	0 -> 1 [color=blue, style=dashed];
+	0 -> 3;
+	0 -> 7;
+	1 -> 0;
+	1 -> 4 [color=blue, style=dashed];
+	2 -> 3;
+	2 -> 5;
+	2 -> 7;
+	3 -> 0;
+	3 -> 2;
+	3 -> 4;
+	3 -> 6;
+	4 -> 1;
+	4 -> 3;
+	4 -> 8 [color=blue, style=dashed];
+	5 -> 2;
+	5 -> 6;
+	6 -> 3;
+	6 -> 5;
+	6 -> 8;
+	7 -> 0 [color=blue, style=dashed];
+	7 -> 2;
+	8 -> 4;
+	8 -> 6;
+}
+```
+
+Par exemple, le fichier ci-dessus permet de générer cette image, en utilisant
+Graphviz :
+
+![](images/map3x3-dot-walk.png)
 
 ## Installation et fonctionnement
 
@@ -281,6 +357,13 @@ Les cartes produites au format PNG sont générées à l'aide de la bibliothèqu
 [Cairo](https://cairographics.org/), dont la documentation est disponible en
 ligne. Une installation de cette bibliothèque est nécessaire pour faire
 fonctionner le projet.
+
+## Graphviz
+
+Les cartes produites à partir d'un fichier DOT sont générées à l'aide du 
+logiciel [Graphviz](https://www.graphviz.org/), dont la documentation est
+disponible en ligne. Il n'est pas nécessaire d'installer ce logiciel pour
+faire fonctionner le projet.
 
 ## Plateformes supportées
 
