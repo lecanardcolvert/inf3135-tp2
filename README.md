@@ -223,7 +223,7 @@ digraph {
 Par exemple, le fichier ci-dessus permet de générer cette image, en utilisant
 Graphviz :
 
-![](images/map3x3-dot-walk.png)
+![](images/graph3x3-dot-walk.png)
 
 ## Installation et fonctionnement
 
