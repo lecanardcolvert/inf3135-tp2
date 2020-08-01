@@ -282,6 +282,13 @@ Les cartes produites au format PNG sont générées à l'aide de la bibliothèqu
 ligne. Une installation de cette bibliothèque est nécessaire pour faire
 fonctionner le projet.
 
+## Graphviz
+
+Les cartes produites à partir d'un fichier DOT sont générées à l'aide du 
+logiciel [Graphviz](https://www.graphviz.org/), dont la documentation est
+disponible en ligne. Il n'est pas nécessaire d'installer ce logiciel pour
+faire fonctionner le projet.
+
 ## Plateformes supportées
 
 Testé sur Ubuntu 18.04.
