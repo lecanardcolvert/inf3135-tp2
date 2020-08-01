@@ -1,10 +1,17 @@
 #include "jsonvalidation.h"
 #include <unistd.h>
+#include <string.h>
+
+#ifndef ROOT_DIR
+#define ROOT_DIR "."
+#endif
+#define PATH_LENGTH 1000
+#define PATH_LENGTH2 (PATH_LENGTH + 1 - sizeof(ROOT_DIR))
 
 /**
  * Validation errors
  */
-enum status {
+enum jsonvalidation_status {
     JSONVALIDATION_OK                           = 0, 
     JSONVALIDATION_OTHER_ERROR                  = 1,
     JSONVALIDATION_MISSING_ISOMAP               = 2, 
@@ -208,8 +215,11 @@ unsigned int jsonvalidation_validate_tile_filename(const json_t *tile) {
     } else if (!json_is_string(key)) {
         error_no = JSONVALIDATION_BAD_TILE_FILENAME_VALUE;
     } else {        
-        const char* filename = json_string_value(key);
-        if (access(filename, R_OK) == -1) {
+        const char* json_filename = json_string_value(key);
+        char filename[PATH_LENGTH];
+        strncpy(filename, ROOT_DIR, PATH_LENGTH);
+        strncat(filename, json_filename, PATH_LENGTH2);
+        if (access(filename, R_OK) != 0) {
             error_no = JSONVALIDATION_NONEXISTENT_TILE_FILE;
         }
     }

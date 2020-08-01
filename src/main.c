@@ -8,6 +8,7 @@
 #include "isomap.h"
 #include "geometry.h"
 #include "graph.h"
+#include "jsonvalidation.h"
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -218,7 +219,18 @@ int main(int argc, char *argv[]) {
                 exit(ISOMAP_ERROR_INVALID_PATH);
             }
         }
-        struct isomap *isomap = isomap_create_from_json_file(input);
+
+        struct isomap *isomap;
+        int error_no = jsonvalidation_validate_file(input);
+        if (error_no == 0) {
+            rewind(input);
+            isomap = isomap_create_from_json_file(input);
+        } else {
+            printf("Erreur #%i.\n", error_no);
+            printf("Veuillez svp vérifier les données du fichier JSON source.\n");
+            exit(error_no);
+        }
+        
         if (input != stdin)
             fclose(input);
         FILE *output = stdout;
