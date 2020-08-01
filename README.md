@@ -226,6 +226,52 @@ Afin de simplifier la programmation, la bibliothèque
 [Jansson](http://www.digip.org/jansson/) est utilisée pour charger une carte en
 format JSON.
 
+### Codes d'erreur
+
+Lorsque le logiciel détecte une erreur dans le fichier JSON, alors il cesse
+de fonctionner. Un code d'erreur s'affiche à l'écran.
+
+Pour retracer et corriger l'erreur dans le fichier JSON, il suffit de chercher 
+le code d'erreur dans la liste suivante, et de vérifier le nom du code d'erreur.
+Puis, corriger le fichier JSON.
+
+```
+    JSONVALIDATION_OK                           = 0, 
+    JSONVALIDATION_OTHER_ERROR                  = 1,
+    JSONVALIDATION_MISSING_ISOMAP               = 2, 
+    JSONVALIDATION_BAD_ISOMAP_VALUE             = 3, 
+    JSONVALIDATION_MISSING_ISOMAP_TILEWIDTH_KEY = 4, 
+    JSONVALIDATION_BAD_ISOMAP_TILEWIDTH_VALUE   = 5,   
+    JSONVALIDATION_MISSING_ISOMAP_ZOFFSET_KEY   = 6, 
+    JSONVALIDATION_BAD_ISOMAP_ZOFFSET_VALUE     = 7, 
+    JSONVALIDATION_MISSING_ISOMAP_TILESET_KEY   = 8, 
+    JSONVALIDATION_BAD_ISOMAP_TILESET_VALUE     = 9, 
+    JSONVALIDATION_MISSING_ISOMAP_LAYERS_KEY    = 10,
+    JSONVALIDATION_BAD_ISOMAP_LAYERS_VALUE      = 11,   
+    JSONVALIDATION_BAD_TILE_VALUE               = 12,
+    JSONVALIDATION_MISSING_TILE_ID_KEY          = 13,
+    JSONVALIDATION_BAD_TILE_ID_VALUE            = 14,
+    JSONVALIDATION_MISSING_TILE_FILENAME_KEY    = 15,
+    JSONVALIDATION_BAD_TILE_FILENAME_VALUE      = 16,
+    JSONVALIDATION_MISSING_TILE_INCOMING_KEY    = 17,
+    JSONVALIDATION_BAD_TILE_INCOMING_VALUE      = 18,
+    JSONVALIDATION_MISSING_TILE_OUTGOING_KEY    = 19,
+    JSONVALIDATION_BAD_TILE_OUTGOING_VALUE      = 20,
+    JSONVALIDATION_BAD_LAYER_VALUE              = 21,
+    JSONVALIDATION_MISSING_LAYER_NUMROWS_KEY    = 22,
+    JSONVALIDATION_BAD_LAYER_NUMROWS_VALUE      = 23,
+    JSONVALIDATION_MISSING_LAYER_NUMCOLS_KEY    = 24,
+    JSONVALIDATION_BAD_LAYER_NUMCOLS_VALUE      = 25,
+    JSONVALIDATION_MISSING_LAYER_OFFSET_KEY     = 26,
+    JSONVALIDATION_BAD_LAYER_OFFSET_VALUE       = 27,
+    JSONVALIDATION_MISSING_LAYER_DATA_KEY       = 28,
+    JSONVALIDATION_BAD_LAYER_DATA_VALUE         = 29,
+    JSONVALIDATION_NONUNIQUE_TILE_ID            = 30,
+    JSONVALIDATION_NONEXISTENT_TILE_FILE        = 31,
+    JSONVALIDATION_BAD_DIRECTION_VALUE          = 32,
+    JSONVALIDATION_NONRECTANGULAR_DATA          = 33
+```
+
 ## Cairo
 
 Les cartes produites au format PNG sont générées à l'aide de la bibliothèque
